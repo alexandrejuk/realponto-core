@@ -1,9 +1,9 @@
 const database = require('../../database')
-const ProductModel = database.model('product')
+const UserModel = database.model('user')
 
 const create = async (req, res, next) => {
   try {
-    const response = await ProductModel.create(req.body)
+    const response = await UserModel.create(req.body)
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -12,7 +12,7 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const response = await ProductModel.findByPk(req.params.id)
+    const response = await UserModel.findByPk(req.params.id)
     await response.update(req.body)
     await response.reload()
 
@@ -24,7 +24,7 @@ const update = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   try {
-    const response = await ProductModel.findByPk(req.params.id)
+    const response = await UserModel.findByPk(req.params.id)
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -33,7 +33,7 @@ const getById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const response = await ProductModel.findAll()
+    const response = await UserModel.findAll()
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })

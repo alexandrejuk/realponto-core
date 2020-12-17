@@ -19,6 +19,7 @@ const Product = (sequelize) => {
     minQuantity: {
       type: Sequelize.INTEGER,
       allowNull: false,
+      defaultValue: 5,
     },
   })
 
