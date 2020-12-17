@@ -1,3 +1,4 @@
+const { omit, pathOr } = require('ramda')
 const database = require('../../database')
 const UserModel = database.model('user')
 
@@ -11,9 +12,11 @@ const create = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
+  const userWithouPwd = omit(['password'], req.body)
+  const userId = pathOr(null, ['params', 'id'], req)
   try {
-    const response = await UserModel.findByPk(req.params.id)
-    await response.update(req.body)
+    const response = await UserModel.findByPk(userId)
+    await response.update(userWithouPwd)
     await response.reload()
 
     res.json(response)

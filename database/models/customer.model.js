@@ -11,6 +11,11 @@ const Customer = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    document: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+    },
   })
 
   return Customer

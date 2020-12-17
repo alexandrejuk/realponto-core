@@ -23,6 +23,15 @@ const Product = (sequelize) => {
     },
   })
 
+  Product.associate = (models) => {
+    models.product.hasMany(models.serialNumber, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+  }
+
+
   return Product
 }
 

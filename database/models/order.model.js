@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const ENUM_TRANSACTION = require('../../utils/database/transaction/transaction.enum')
+const { ENUM_TRANSACTION } = require('../../utils/database/transaction/transaction.enum')
 
 const Order = (sequelize) => {
   const Order = sequelize.define('order', {
@@ -13,6 +13,11 @@ const Order = (sequelize) => {
       allowNull: false,
       defaultValue: 'inputs',
     },
+    pending_review: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    }
   })
 
   Order.associate = (models) => {
@@ -28,6 +33,17 @@ const Order = (sequelize) => {
       }
     })
 
+    models.order.hasMany(models.transaction, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+
+    models.order.hasMany(models.serialNumber, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
   }
 
   return Order

@@ -1,11 +1,18 @@
 const database = require('../../database')
 const ProductModel = database.model('product')
+const BalanceModel = database.model('balance')
 
 const create = async (req, res, next) => {
+  const transaction = await database.transaction()
+
   try {
     const response = await ProductModel.create(req.body)
+    await BalanceModel.create({ productId: response.id }, { transaction })
+
+    await transaction.commit()
     res.json(response)
   } catch (error) {
+    await transaction.rollback()
     res.status(400).json({ error: error.message })
   }
 }

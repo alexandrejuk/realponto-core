@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const ENUM_TRANSACTION = require('../../utils/database/transaction/transaction.enum')
+const { ENUM_TRANSACTION } = require('../../utils/database/transaction/transaction.enum')
 
 const Transaction = (sequelize) => {
   const Transaction = sequelize.define('transaction', {
