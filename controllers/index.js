@@ -4,6 +4,7 @@ const customerController = require('./customer')
 const orderController = require('./order')
 const serialNumberController = require('./serialNumber')
 const authenticationController = require('./authentication')
+const transactionController = require('./transaction')
 
 module.exports = {
   productController,
@@ -12,4 +13,5 @@ module.exports = {
   orderController,
   serialNumberController,
   authenticationController,
+  transactionController,
 }
