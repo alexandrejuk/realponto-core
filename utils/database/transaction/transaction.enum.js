@@ -23,7 +23,8 @@ const ENUM_TRANSACTION = [
   'technician_return',
   'technician_with_pending_analysis_return',
   'ecommerce_with_pending_analysis_return',
-  'free_market_return'
+  'free_market_return',
+  'free_market_with_analysis_return',
 ]
 
 const parseStatusToType = {
@@ -50,6 +51,7 @@ const parseStatusToType = {
   technician_with_pending_analysis_return: 'inputs',
   ecommerce_with_pending_analysis_return: 'inputs',
   free_market_return: 'inputs',
+  free_market_with_analysis_return: 'inputs',
 }
 
 const relativeStatus = {
