@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const uuidv4Generator = require('../../utils/helpers/hash')
 
 const SerialNumber = (sequelize) => {
   const SerialNumber = sequelize.define('serialNumber', {
@@ -6,6 +7,7 @@ const SerialNumber = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
       primaryKey: true,
+      defaultValue: uuidv4Generator('sn_')
     },
     serialNumber: {
       type: Sequelize.STRING,

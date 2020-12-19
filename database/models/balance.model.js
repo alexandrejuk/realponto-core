@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const uuidv4Generator = require('../../utils/helpers/hash')
 
 const Balance = (sequelize) => {
   const Balance = sequelize.define('balance', {
@@ -6,6 +7,7 @@ const Balance = (sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
+      defaultValue: uuidv4Generator('ba_')
     },
     quantity: {
       type: Sequelize.INTEGER,

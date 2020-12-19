@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const uuidv4Generator = require('../../utils/helpers/hash')
 
 const Transaction = (sequelize) => {
   const Transaction = sequelize.define('transaction', {
@@ -6,6 +7,7 @@ const Transaction = (sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
+      defaultValue: uuidv4Generator('td_')
     },
     quantity: {
       type: Sequelize.INTEGER,

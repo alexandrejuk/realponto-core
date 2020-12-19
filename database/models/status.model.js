@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const uuidv4Generator = require('../../utils/helpers/hash')
 
 const Status = (sequelize) => {
   const Status = sequelize.define('status', {
@@ -6,6 +7,7 @@ const Status = (sequelize) => {
       allowNull: false,
       type: Sequelize.STRING,
       primaryKey: true,
+      defaultValue: uuidv4Generator('st_')
     },
     activated: {
       type: Sequelize.BOOLEAN,

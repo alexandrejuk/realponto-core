@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const uuidv4Generator = require('../../utils/helpers/hash')
 
 const Order = (sequelize) => {
   const Order = sequelize.define('order', {
@@ -6,6 +7,7 @@ const Order = (sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
+      defaultValue: uuidv4Generator('or_'),
     },
     pendingReview: {
       type: Sequelize.BOOLEAN,

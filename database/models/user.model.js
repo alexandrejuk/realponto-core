@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const uuidv4Generator = require('../../utils/helpers/hash')
 
 const User = (sequelize) => {
   const User = sequelize.define('user', {
@@ -6,6 +7,7 @@ const User = (sequelize) => {
       allowNull: false,
       type: Sequelize.STRING,
       primaryKey: true,
+      defaultValue: uuidv4Generator('us_')
     },
     activated: {
       type: Sequelize.BOOLEAN,

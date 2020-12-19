@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const uuidv4Generator = require('../../utils/helpers/hash')
 
 const Product = (sequelize) => {
   const Product = sequelize.define('product', {
@@ -6,6 +7,7 @@ const Product = (sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
+      defaultValue: uuidv4Generator('pr_'),
     },
     activated: {
       type: Sequelize.BOOLEAN,

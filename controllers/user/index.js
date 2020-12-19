@@ -1,22 +1,25 @@
 const { omit, pathOr } = require('ramda')
 const database = require('../../database')
 const UserModel = database.model('user')
-const Status = database.model('status')
+const { hash } = require('bcrypt')
+
 const create = async (req, res, next) => {
   try {
-    const response = await UserModel.create(req.body)
+    const password = await hash(req.body.password, 10)
+    const response = await UserModel.create({ ...req.body, password })
     res.json(response)
   } catch (error) {
+    console.log(error)
     res.status(400).json({ error: error.message })
   }
 }
 
 const update = async (req, res, next) => {
-  const userWithouPwd = omit(['password'], req.body)
+  const userWithoutPwd = omit(['password'], req.body)
   const userId = pathOr(null, ['params', 'id'], req)
   try {
     const response = await UserModel.findByPk(userId)
-    await response.update(userWithouPwd)
+    await response.update(userWithoutPwd)
     await response.reload()
 
     res.json(response)
@@ -36,7 +39,7 @@ const getById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const response = await Status.findAll()
+    const response = await UserModel.findAll()
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
