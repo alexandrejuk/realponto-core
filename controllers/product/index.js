@@ -1,14 +1,30 @@
 const { pathOr } = require('ramda')
+const Sequelize = require('sequelize')
 const database = require('../../database')
 const ProductModel = database.model('product')
 const BalanceModel = database.model('balance')
 const buildPagination = require('../../utils/helpers/searchSpec')
 const buildSearchAndPagination = buildPagination('product')
+const { Op } = Sequelize
+const { like } = Op
 
 const create = async (req, res, next) => {
   const transaction = await database.transaction()
 
   try {
+    const findProduct = await ProductModel.findOne({
+      where: {
+        name: {
+          [like]: '%'+ req.body.name +'%',
+        },
+        activated: true,
+      }
+    })
+
+    if (findProduct) {
+      throw new Error('Allow only one product with name activated')
+    }
+
     const response = await ProductModel.create(req.body)
     await BalanceModel.create({ productId: response.id }, { transaction })
 
@@ -25,7 +41,6 @@ const update = async (req, res, next) => {
     const response = await ProductModel.findByPk(req.params.id)
     await response.update(req.body)
     await response.reload()
-
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
