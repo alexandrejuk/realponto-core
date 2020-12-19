@@ -1,6 +1,9 @@
+const { pathOr } = require('ramda')
 const database = require('../../database')
 const ProductModel = database.model('product')
 const BalanceModel = database.model('balance')
+const buildPagination = require('../../utils/helpers/searchSpec')
+const buildSearchAndPagination = buildPagination('product')
 
 const create = async (req, res, next) => {
   const transaction = await database.transaction()
@@ -39,9 +42,10 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const query = buildSearchAndPagination(pathOr({}, ['query'], req))
   try {
-    const response = await ProductModel.findAll()
-    res.json(response)
+    const { count, rows } = await ProductModel.findAndCountAll(query)
+    res.json({ total: count, source: rows })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }

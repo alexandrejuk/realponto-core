@@ -1,5 +1,8 @@
+const { pathOr } = require('ramda')
 const database = require('../../database')
 const CustomerModel = database.model('customer')
+const buildPagination = require('../../utils/helpers/searchSpec')
+const buildSearchAndPagination = buildPagination('customer')
 
 const create = async (req, res, next) => {
   try {
@@ -32,9 +35,10 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const query = buildSearchAndPagination(pathOr({}, ['query'], req))
   try {
-    const response = await CustomerModel.findAll()
-    res.json(response)
+    const { count, rows } = await CustomerModel.findAndCountAll(query)
+    res.json({ total: count, source: rows })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
