@@ -76,30 +76,29 @@ const parserDateGteAndLte = propName => values => {
   })
 }
 
+const getColor = propName => values => {
+  let color = pathOr(null, ['color'], values)
+  if (color) {
+    return concat('#', color)
+  }
+
+  return null
+}
+
 const searchSpecs = {
   status: applySpec({
     id: pathOr(null, ['id']),
     activated: pathOr(null, ['activated']),
     label: likeOperation('label'),
     value: likeOperation('value'),
-    color: ifElse(
-      compose(
-        isNil,
-        Number,
-        pathOr(null, ['color'])
-      ),
-      always(null),
-      pipe(
-        pathOr(null, ['color']),
-        concat('#'),
-      )
-    ),
+    color: getColor('color'),
     type: pathOr(null, ['type']),
     typeLabel: pathOr(null, ['typeLabel']),
     createdAt: parserDateGteAndLte('createdAt'),
     updatedAt: parserDateGteAndLte('updatedAt'),
   }),
   user: applySpec({
+    name: likeOperation('name'),
     document: pathOr(null, ['document']),
     createdAt: parserDateGteAndLte('createdAt'),
     updatedAt: parserDateGteAndLte('updatedAt'),
