@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
-const User = (sequelize) => {
-  const User = sequelize.define('user', {
+const Status = (sequelize) => {
+  const Status = sequelize.define('status', {
     id: {
       allowNull: false,
       type: Sequelize.STRING,
@@ -12,27 +12,32 @@ const User = (sequelize) => {
       allowNull: false,
       defaultValue: true,
     },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    username: {
+    label: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
     },
-    password: {
+    value: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    color: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    firstAccess: {
-      type: Sequelize.BOOLEAN,
+    type: {
+      type: Sequelize.ENUM(['inputs', 'outputs']),
       allowNull: false,
-      defaultValue: true,
+      defaultValue: 'inputs',
+    },
+    typeLabel: {
+      type: Sequelize.ENUM(['Entrada', 'Saída']),
+      allowNull: false,
     },
   })
 
-  return User
+  return Status
 }
 
-module.exports = User
+module.exports = Status

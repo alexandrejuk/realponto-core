@@ -3,11 +3,11 @@ const Sequelize = require('sequelize')
 const SerialNumber = (sequelize) => {
   const SerialNumber = sequelize.define('serialNumber', {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.STRING,
+      allowNull: false,
       primaryKey: true,
     },
-    serial_number: {
+    serialNumber: {
       type: Sequelize.STRING,
       allowNull: false,
     },
@@ -16,12 +16,12 @@ const SerialNumber = (sequelize) => {
       allowNull: false,
       defaultValue: true,
     },
-    transaction_in_id: {
-      type: Sequelize.UUID,
+    transactionInId: {
+      type: Sequelize.STRING,
       allowNull: false,
     },
-    transaction_out_id: {
-      type: Sequelize.UUID,
+    transactionOutId: {
+      type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null,
     },

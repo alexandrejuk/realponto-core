@@ -3,9 +3,9 @@ const Sequelize = require('sequelize')
 const Product = (sequelize) => {
   const Product = sequelize.define('product', {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.STRING,
       primaryKey: true,
+      allowNull: false,
     },
     activated: {
       type: Sequelize.BOOLEAN,
@@ -30,7 +30,6 @@ const Product = (sequelize) => {
       }
     })
   }
-
 
   return Product
 }

@@ -3,9 +3,9 @@ const Sequelize = require('sequelize')
 const Customer = (sequelize) => {
   const Customer = sequelize.define('customer', {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.STRING,
       primaryKey: true,
+      allowNull: false,
     },
     name: {
       type: Sequelize.STRING,

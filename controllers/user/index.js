@@ -1,7 +1,7 @@
 const { omit, pathOr } = require('ramda')
 const database = require('../../database')
 const UserModel = database.model('user')
-
+const Status = database.model('status')
 const create = async (req, res, next) => {
   try {
     const response = await UserModel.create(req.body)
@@ -36,7 +36,7 @@ const getById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const response = await UserModel.findAll()
+    const response = await Status.findAll()
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })

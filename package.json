@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "migrate": "sequelize db:migrate",
-    "migrate:undo": "sequelize db:migrate:undo:all",
+    "seeders": "sequelize db:seed:all",
+    "seeders:undo:all": "sequelize db:seed:all",
+    "migrate:undo:all": "sequelize db:migrate:undo:all",
     "build": "sequelize db:migrate --url $DATABASE_URL"
   },
   "dependencies": {

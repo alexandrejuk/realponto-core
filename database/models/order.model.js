@@ -1,19 +1,13 @@
 const Sequelize = require('sequelize')
-const { ENUM_TRANSACTION } = require('../../utils/database/transaction/transaction.enum')
 
 const Order = (sequelize) => {
   const Order = sequelize.define('order', {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.STRING,
       primaryKey: true,
-    },
-    status: {
-      type: Sequelize.ENUM(ENUM_TRANSACTION),
       allowNull: false,
-      defaultValue: 'inputs',
     },
-    pending_review: {
+    pendingReview: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: false,
@@ -33,15 +27,21 @@ const Order = (sequelize) => {
       }
     })
 
+    models.order.belongsTo(models.status, {
+      foreignKey: {
+        allowNull: false,
+      }
+    })
+
     models.order.hasMany(models.transaction, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
 
     models.order.hasMany(models.serialNumber, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
   }

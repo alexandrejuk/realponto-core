@@ -5,6 +5,8 @@ const Transaction = require('./transaction.model')
 const Customer = require('./customer.model')
 const User = require('./user.model')
 const SerialNumber = require('./serialNumber.model')
+const Status = require('./status.model')
+const OrderProduct = require('./orderProduct.model')
 
 module.exports = [
   Balance,
@@ -14,4 +16,6 @@ module.exports = [
   Customer,
   User,
   SerialNumber,
+  Status,
+  OrderProduct,
 ]

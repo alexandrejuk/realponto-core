@@ -1,22 +1,11 @@
 const Sequelize = require('sequelize')
-const { ENUM_TRANSACTION } = require('../../utils/database/transaction/transaction.enum')
 
 const Transaction = (sequelize) => {
   const Transaction = sequelize.define('transaction', {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.STRING,
       primaryKey: true,
-    },
-    status: {
-      type: Sequelize.ENUM(ENUM_TRANSACTION),
       allowNull: false,
-      defaultValue: 'inputs',
-    },
-    type: {
-      type: Sequelize.ENUM(['inputs', 'outputs']),
-      allowNull: false,
-      defaultValue: 'inputs',
     },
     quantity: {
       type: Sequelize.INTEGER,
@@ -32,6 +21,18 @@ const Transaction = (sequelize) => {
     })
 
     models.transaction.belongsTo(models.order, {
+      foreignKey: {
+        allowNull: false,
+      }
+    })
+
+    models.transaction.belongsTo(models.user, {
+      foreignKey: {
+        allowNull: false,
+      }
+    })
+
+    models.transaction.belongsTo(models.status, {
       foreignKey: {
         allowNull: false,
       }

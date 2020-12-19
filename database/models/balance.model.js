@@ -3,9 +3,9 @@ const Sequelize = require('sequelize')
 const Balance = (sequelize) => {
   const Balance = sequelize.define('balance', {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.STRING,
       primaryKey: true,
+      allowNull: false,
     },
     quantity: {
       type: Sequelize.INTEGER,

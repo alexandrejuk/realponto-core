@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize')
+'use strict'
 
-const User = (sequelize) => {
-  const User = sequelize.define('user', {
+module.exports = {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('users', {
     id: {
       allowNull: false,
       type: Sequelize.STRING,
@@ -30,9 +30,16 @@ const User = (sequelize) => {
       allowNull: false,
       defaultValue: true,
     },
-  })
-
-  return User
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: new Date(),
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: new Date(),
+    },
+  }),
+  down: queryInterface => queryInterface.dropTable('users'),
 }
-
-module.exports = User
