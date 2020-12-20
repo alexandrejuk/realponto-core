@@ -10,13 +10,6 @@ module.exports = {
     customerId: 'co_93ac00e9-dc56-457b-ada0-f719679c0a6b',
   },
   {
-    id: 'or_f52fe459-a134-4674-9970-42072b31cc93',
-    statusId: 'st_dcfa0308-227f-45f1-a7ac-cedfc22fd7a5',
-    pendingReview: true,
-    userId: null,
-    customerId: 'co_93ac00e9-dc56-457b-ada0-f719679c0a6b',
-  },
-  {
     id: 'or_479d7ec6-5897-457a-9967-693b8efceb7c',
     statusId: 'st_dc093433-1fa0-409e-9c54-99488c3351fe',
     pendingReview: true,

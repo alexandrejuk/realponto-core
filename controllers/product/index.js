@@ -25,7 +25,7 @@ const create = async (req, res, next) => {
       throw new Error('Allow only one product with name activated')
     }
 
-    const response = await ProductModel.create(req.body)
+    const response = await ProductModel.create(req.body, { transaction })
     await BalanceModel.create({ productId: response.id }, { transaction })
 
     await transaction.commit()
@@ -59,8 +59,8 @@ const getById = async (req, res, next) => {
 const getAll = async (req, res, next) => {
   const query = buildSearchAndPagination(pathOr({}, ['query'], req))
   try {
-    const { count, rows } = await ProductModel.findAndCountAll(query)
-    res.json({ total: count, source: rows })
+    const { rows } = await ProductModel.findAndCountAll(query)
+    res.json({ total: rows.length, source: rows })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
