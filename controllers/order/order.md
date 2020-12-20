@@ -56,3 +56,6 @@ para encerrarmos a movimentação da ordem podemos usar o pending_review como fa
     "pending_review": false
   }
 ```
+
+query de busca com todos os campos
+/api/orders?user_name=ale&customer_name=developement&customer_document=11222333000100&status_value=Reserva&status_typeLabel=Saída&product_name=Air&pendingReview=true&createdAt=2020-12-19&updatedAt=2020-10-10

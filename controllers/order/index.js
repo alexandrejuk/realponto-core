@@ -1,4 +1,10 @@
-const { pathOr, map, omit, propEq } = require('ramda')
+const {
+  pathOr,
+  map,
+  omit,
+  propEq,
+  isEmpty,
+} = require('ramda')
 const database = require('../../database')
 const OrderModel = database.model('order')
 const TransactionModel = database.model('transaction')
@@ -9,6 +15,41 @@ const BalanceModel = database.model('balance')
 const StatusModel = database.model('status')
 const OrderProductModel = database.model('orderProduct')
 const CustomerModel = database.model('customer')
+const buildPagination = require('../../utils/helpers/searchSpec')
+const buildSearchAndPagination = buildPagination('order')
+
+const includeValues = [
+  {
+    model: CustomerModel,
+    attributes: ['name', 'document']
+  },
+  {
+    model: UserModel,
+    attributes: ['name', 'activated']
+  },
+  {
+    model: StatusModel,
+    attributes: [ 'value', 'color', 'typeLabel']
+  },
+  {
+    model: TransactionModel,
+    attributes: ['quantity', 'id'],
+    include: [
+      {
+        model: ProductModel,
+        attributes: ['name', 'activated'],
+      },
+      {
+        model: StatusModel,
+        attributes: [ 'value', 'color', 'typeLabel']
+      },
+      {
+        model: UserModel,
+        attributes: ['name', 'activated']
+      }
+    ],
+  },
+]
 
 const include = [
   {
@@ -190,10 +231,57 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const { where, offset, limit } = buildSearchAndPagination(req.query)
+  const setWhereOnInclude = includeValues.map(includeValue => {
+    const wheres = omit(['orderWhere'], where)
+    const includeWhereAdd = wheres[includeValue.model.name]
+    if(isEmpty(includeWhereAdd)) {
+      return includeValue
+    }
+
+    if(!isEmpty(includeWhereAdd) && includeValue.model.name === 'transaction') {
+      return {
+        ...includeValue,
+        include: [
+          {
+            model: ProductModel,
+            attributes: ['name', 'activated'],
+            where: { ...includeWhereAdd }
+          },
+          {
+            model: UserModel,
+            attributes: ['name', 'activated']
+          },
+          {
+            model: StatusModel,
+            attributes: [ 'value', 'color', 'typeLabel']
+          },
+        ]
+      }
+    }
+
+    return ({
+      ...includeValue,
+      where: {...includeWhereAdd } ,
+    })
+  })
+
+  const orderWhere = (
+    isEmpty(where.orderWhere)
+      ? {}
+      : { where: where.orderWhere }
+  )
+    console.log('order', orderWhere)
   try {
-    const { rows } = await OrderModel.findAndCountAll({ include })
+    const { rows } = await OrderModel.findAndCountAll({
+      ...orderWhere,
+      include: setWhereOnInclude,
+      offset,
+      limit,
+    })
     res.json({ total: rows.length, source: rows })
   } catch (error) {
+    console.log(error)
     res.status(400).json({ error: error.message })
   }
 }

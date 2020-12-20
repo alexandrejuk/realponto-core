@@ -8,7 +8,6 @@ const {
   isEmpty,
   multiply,
   compose,
-  mergeLeft,
   ifElse,
   equals,
   always,
@@ -85,42 +84,123 @@ const getColor = propName => values => {
   return null
 }
 
-const searchSpecs = {
-  status: applySpec({
-    id: pathOr(null, ['id']),
-    activated: pathOr(null, ['activated']),
-    label: likeOperation('label'),
-    value: likeOperation('value'),
-    color: getColor('color'),
-    type: pathOr(null, ['type']),
-    typeLabel: pathOr(null, ['typeLabel']),
-    createdAt: parserDateGteAndLte('createdAt'),
-    updatedAt: parserDateGteAndLte('updatedAt'),
-  }),
-  user: applySpec({
-    name: likeOperation('name'),
-    document: pathOr(null, ['document']),
-    createdAt: parserDateGteAndLte('createdAt'),
-    updatedAt: parserDateGteAndLte('updatedAt'),
-  }),
-  product: applySpec({
-    activated: pathOr(null, ['activated']),
-    name: likeOperation('name'),
-    minQuantity: minQuantityParser('minQuantity'),
-    createdAt: parserDateGteAndLte('createdAt'),
-    updatedAt: parserDateGteAndLte('updatedAt'),
-  }),
-  order: {},
-  serialNumber: {},
-  customer: applySpec({
-    name: likeOperation('name'),
-    document: pathOr(null, ['document']),
-    createdAt: parserDateGteAndLte('createdAt'),
-    updatedAt: parserDateGteAndLte('updatedAt'),
-  }),
+const removeFiledsNilOrEmpty = values => {
+  const fields = values
+  const fieldFormmat = Object.keys(fields)
+  .reduce((curr, prev) => {
+    if (!curr[prev] && fields[prev]) {
+      if (fields[prev] == 'true') {
+        curr = {
+          ...curr,
+          [prev]: true
+        }
+      }
+
+      if(fields[prev] == 'false') {
+        curr = {
+          ...curr,
+          [prev]: false
+        }
+      }
+
+      if(fields[prev] != 'true' && fields != 'false') {
+        curr = {
+          ...curr,
+          [prev]: fields[prev]
+        }
+      }
+    }
+    return curr
+  }, {})
+
+  return fieldFormmat
 }
 
-const paginationSettings = whereSpec => applySpec({
+const orderSpec = applySpec({
+  user: pipe(
+    applySpec({
+      name: likeOperation('user_name'),
+    }),
+    removeFiledsNilOrEmpty
+  ),
+  customer: pipe(
+    applySpec({
+      name: likeOperation('customer_name'),
+      document: pathOr(null, ['customer_document']),
+    }),
+    removeFiledsNilOrEmpty,
+  ),
+  status: pipe(
+    applySpec({
+      value: likeOperation('status_value'),
+      typeLabel: pathOr(null, ['status_typeLabel']),
+    }),
+    removeFiledsNilOrEmpty
+  ),
+  transaction: pipe(
+    applySpec({
+      name: likeOperation('product_name'),
+    }),
+    removeFiledsNilOrEmpty
+  ),
+  orderWhere: pipe(
+    applySpec({
+      pendingReview: pathOr(null, ['pendingReview']),
+      createdAt: parserDateGteAndLte('createdAt'),
+      updatedAt: parserDateGteAndLte('updatedAt'),
+    }),
+    removeFiledsNilOrEmpty
+  ),
+})
+
+const searchSpecs = {
+  status: pipe(
+    applySpec({
+      id: pathOr(null, ['id']),
+      activated: pathOr(null, ['activated']),
+      label: likeOperation('label'),
+      value: likeOperation('value'),
+      color: getColor('color'),
+      type: pathOr(null, ['type']),
+      typeLabel: pathOr(null, ['typeLabel']),
+      createdAt: parserDateGteAndLte('createdAt'),
+      updatedAt: parserDateGteAndLte('updatedAt'),
+    }),
+    removeFiledsNilOrEmpty
+  ),
+  user: pipe(
+    applySpec({
+      name: likeOperation('name'),
+      document: pathOr(null, ['document']),
+      createdAt: parserDateGteAndLte('createdAt'),
+      updatedAt: parserDateGteAndLte('updatedAt'),
+    }),
+    removeFiledsNilOrEmpty,
+  ),
+  product: pipe(
+    applySpec({
+      activated: pathOr(null, ['activated']),
+      name: likeOperation('name'),
+      minQuantity: minQuantityParser('minQuantity'),
+      createdAt: parserDateGteAndLte('createdAt'),
+      updatedAt: parserDateGteAndLte('updatedAt'),
+    }),
+    removeFiledsNilOrEmpty,
+  ),
+  order: orderSpec,
+  serialNumber: {},
+  customer: pipe(
+    applySpec({
+      name: likeOperation('name'),
+      document: pathOr(null, ['document']),
+      createdAt: parserDateGteAndLte('createdAt'),
+      updatedAt: parserDateGteAndLte('updatedAt'),
+    }),
+    removeFiledsNilOrEmpty,
+  ),
+}
+
+const buildPagination = whereSpec => applySpec({
   offset: ifElse(
     compose(
       equals(0),
@@ -144,33 +224,5 @@ const paginationSettings = whereSpec => applySpec({
   ),
   where: searchSpecs[whereSpec],
 })
-
-const removeFieldsNilOrEmpty = values => {
-  let fields = {}
-  for (let key in values) {
-    if (!isNil(values[key])) {
-      if (key === 'where') {
-        for (let whereKey in values[key]) {
-          if (!isNil(values[key][whereKey])) {
-            fields = {
-              ...fields,
-              [key]: mergeLeft(fields[key], { [whereKey]: values[key][whereKey] })
-            }
-          }
-        }
-      }
-      else {
-        fields = mergeLeft(fields, { [key]: values[key] })
-      }
-    }
-  }
-
-  return fields
-}
-
-const buildPagination = whereSpec => pipe(
-  paginationSettings(whereSpec),
-  removeFieldsNilOrEmpty,
-)
 
 module.exports = buildPagination
