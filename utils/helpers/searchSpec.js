@@ -17,7 +17,7 @@ const {
 } = require('ramda')
 const Sequelize = require('sequelize')
 const { Op } = Sequelize
-const { gte, lte, like } = Op
+const { gte, lte, iLike } = Op
 
 const calculatorOffset = values => {
   const pageOffset = pipe(pathOr(1, ['page']), Number)(values)
@@ -45,7 +45,7 @@ const minQuantityParser = propName => values => {
   return Number(propValue)
 }
 
-const likeOperation = propName => values => {
+const iLikeOperation = propName => values => {
   const propValue = propOr('', propName, values)
   if (isEmpty(propValue)) {
     console.log(propValue)
@@ -53,7 +53,7 @@ const likeOperation = propName => values => {
   }
 
   return ({
-    [like]: concat(concat('%', propValue), '%')
+    [iLike]: concat(concat('%', propValue), '%')
   })
 }
 
@@ -72,6 +72,27 @@ const parserDateGteAndLte = propName => values => {
       prop(propName),
       parserDateToMoment('end')
     )(values)
+  })
+}
+
+const parserDateGteAndLteForCreatedAt = values => {
+  const intialDate = pipe(
+    pathOr(null, ['initialDate']),
+    parserDateToMoment('start')
+  )(values)
+
+  const finalyDate = pipe(
+    pathOr(null, ['finalyDate']),
+    parserDateToMoment('end')
+  )(values)
+
+  if (isNil(intialDate) && isNil(finalyDate)) {
+    return null
+  }
+
+  return ({
+    [gte]: intialDate,
+    [lte]: finalyDate,
   })
 }
 
@@ -119,34 +140,34 @@ const removeFiledsNilOrEmpty = values => {
 const orderSpec = applySpec({
   user: pipe(
     applySpec({
-      name: likeOperation('user_name'),
+      name: iLikeOperation('user_name'),
     }),
     removeFiledsNilOrEmpty
   ),
   customer: pipe(
     applySpec({
-      name: likeOperation('customer_name'),
+      name: iLikeOperation('customer_name'),
       document: pathOr(null, ['customer_document']),
     }),
     removeFiledsNilOrEmpty,
   ),
   status: pipe(
     applySpec({
-      value: likeOperation('status_value'),
+      value: iLikeOperation('status_value'),
       typeLabel: pathOr(null, ['status_typeLabel']),
     }),
     removeFiledsNilOrEmpty
   ),
   transaction: pipe(
     applySpec({
-      name: likeOperation('product_name'),
+      name: iLikeOperation('product_name'),
     }),
     removeFiledsNilOrEmpty
   ),
   orderWhere: pipe(
     applySpec({
       pendingReview: pathOr(null, ['pendingReview']),
-      createdAt: parserDateGteAndLte('createdAt'),
+      createdAt: parserDateGteAndLteForCreatedAt,
       updatedAt: parserDateGteAndLte('updatedAt'),
     }),
     removeFiledsNilOrEmpty
@@ -158,8 +179,8 @@ const searchSpecs = {
     applySpec({
       id: pathOr(null, ['id']),
       activated: pathOr(null, ['activated']),
-      label: likeOperation('label'),
-      value: likeOperation('value'),
+      label: iLikeOperation('label'),
+      value: iLikeOperation('value'),
       color: getColor('color'),
       type: pathOr(null, ['type']),
       typeLabel: pathOr(null, ['typeLabel']),
@@ -170,7 +191,7 @@ const searchSpecs = {
   ),
   user: pipe(
     applySpec({
-      name: likeOperation('name'),
+      name: iLikeOperation('name'),
       document: pathOr(null, ['document']),
       createdAt: parserDateGteAndLte('createdAt'),
       updatedAt: parserDateGteAndLte('updatedAt'),
@@ -180,7 +201,7 @@ const searchSpecs = {
   product: pipe(
     applySpec({
       activated: pathOr(null, ['activated']),
-      name: likeOperation('name'),
+      name: iLikeOperation('name'),
       minQuantity: minQuantityParser('minQuantity'),
       createdAt: parserDateGteAndLte('createdAt'),
       updatedAt: parserDateGteAndLte('updatedAt'),
@@ -191,7 +212,7 @@ const searchSpecs = {
   serialNumber: {},
   customer: pipe(
     applySpec({
-      name: likeOperation('name'),
+      name: iLikeOperation('name'),
       document: pathOr(null, ['document']),
       createdAt: parserDateGteAndLte('createdAt'),
       updatedAt: parserDateGteAndLte('updatedAt'),

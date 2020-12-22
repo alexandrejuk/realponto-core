@@ -59,8 +59,8 @@ const getById = async (req, res, next) => {
 const getAll = async (req, res, next) => {
   const query = buildSearchAndPagination(pathOr({}, ['query'], req))
   try {
-    const { rows } = await ProductModel.findAndCountAll(query)
-    res.json({ total: rows.length, source: rows })
+    const { count, rows } = await ProductModel.findAndCountAll(query)
+    res.json({ total: count, source: rows })
   } catch (error) {
     res.status(400).json({ error: error.message })
   }

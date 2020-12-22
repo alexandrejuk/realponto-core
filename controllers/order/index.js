@@ -17,6 +17,8 @@ const OrderProductModel = database.model('orderProduct')
 const CustomerModel = database.model('customer')
 const buildPagination = require('../../utils/helpers/searchSpec')
 const buildSearchAndPagination = buildPagination('order')
+const Sequelize = require('sequelize')
+const { parserSummaryData, getStatusSummary } = require('../../utils/helpers/summaryDataParser')
 
 const includeValues = [
   {
@@ -152,7 +154,7 @@ const create = async (req, res, next) => {
   const statusId = pathOr(null, ['body', 'statusId'], req)
   const customerId = pathOr(null, ['body', 'customerId'], req)
   const userId = pathOr(null, ['body', 'userId'], req)
-  const createdBy = pathOr(null, ['decoded', 'user', 'id'], req)
+  const createdBy = pathOr('us_a92a34bf-d0fc-4967-b78a-0ddf2955de4c', ['decoded', 'user', 'id'], req)
   const pendingReview = pathOr(false, ['body', 'pendingReview'], req)
   const products = pathOr([], ['body', 'products'], req)
 
@@ -170,11 +172,13 @@ const create = async (req, res, next) => {
       throw new Error(`cannot create a order with status ${findStatus.label}!`)
     }
 
-    if (findStatus.label !== 'booking') {
+    console.log('userId', userId,customerId)
+    if (findStatus.label !== 'booking' && !userId && !customerId ) {
       // somente ordens com o status booking pode ser criada sem usuário ou
       // cliente
       throw new Error(`cannot create a order without user or customer to status ${findStatus.label}!`)
     }
+
 
     if(products.length === 0) {
       // toda ordem precisa ter pelo menos um produto
@@ -246,7 +250,7 @@ const getAll = async (req, res, next) => {
           {
             model: ProductModel,
             attributes: ['name', 'activated'],
-            where: { ...includeWhereAdd }
+            where: includeWhereAdd
           },
           {
             model: UserModel,
@@ -262,7 +266,7 @@ const getAll = async (req, res, next) => {
 
     return ({
       ...includeValue,
-      where: {...includeWhereAdd } ,
+      where: includeWhereAdd,
     })
   })
 
@@ -271,7 +275,7 @@ const getAll = async (req, res, next) => {
       ? {}
       : { where: where.orderWhere }
   )
-    console.log('order', orderWhere)
+
   try {
     const { rows } = await OrderModel.findAndCountAll({
       ...orderWhere,
@@ -286,9 +290,44 @@ const getAll = async (req, res, next) => {
   }
 }
 
+
+const getSummaryToChart = async (req, res, next) => {
+  const { where, offset, limit } = buildSearchAndPagination(req.query)
+
+  const orderWhere = (
+    isEmpty(where.orderWhere)
+      ? {}
+      : { where: where.orderWhere }
+  )
+  try {
+    const { rows } = await OrderModel.findAndCountAll({
+      ...orderWhere,
+      include: {
+        model: StatusModel,
+        attributes: [ 'value', 'color', 'typeLabel', 'type', 'label', 'id']
+      },
+      attributes: [
+        [Sequelize.fn('date_trunc', 'day', Sequelize.col('order.createdAt')), 'name'],
+        [Sequelize.fn('COUNT', Sequelize.col('order.createdAt')), 'count']
+      ],
+      group: [
+        Sequelize.fn('date_trunc', 'day', Sequelize.col('order.createdAt')),
+        'status.id'
+      ],
+      offset,
+      limit,
+      raw: true,
+    })
+    res.json({ source: parserSummaryData(rows), chartSettings: getStatusSummary(rows) })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error: error.message })
+  }
+}
 module.exports = {
   create,
   update,
   getById,
   getAll,
+  getSummaryToChart,
 }
