@@ -7,6 +7,7 @@ const buildPagination = require('../../utils/helpers/searchSpec')
 const buildSearchAndPagination = buildPagination('status')
 
 const getById = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await StatusModel.findByPk(req.params.id)
     res.json(response)
@@ -16,6 +17,7 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const query = buildSearchAndPagination(pathOr({}, ['query'], req))
   try {
     const { count, rows } = await StatusModel.findAndCountAll(query)

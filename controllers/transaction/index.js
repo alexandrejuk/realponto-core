@@ -2,6 +2,7 @@ const database = require('../../database')
 const TransactionModel = database.model('transaction')
 
 const getById = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await TransactionModel.findByPk(req.params.id)
     res.json(response)
@@ -11,6 +12,7 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await TransactionModel.findAll()
     res.json(response)

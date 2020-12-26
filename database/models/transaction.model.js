@@ -39,6 +39,12 @@ const Transaction = (sequelize) => {
         allowNull: false,
       }
     })
+
+    models.transaction.belongsTo(models.company, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
   }
 
   return Transaction

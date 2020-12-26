@@ -31,6 +31,11 @@ const Product = (sequelize) => {
         allowNull: true,
       }
     })
+    models.product.belongsTo(models.company, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
   }
 
   return Product

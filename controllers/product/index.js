@@ -9,6 +9,7 @@ const { Op } = Sequelize
 const { like } = Op
 
 const create = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const transaction = await database.transaction()
 
   try {
@@ -37,6 +38,7 @@ const create = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await ProductModel.findByPk(req.params.id)
     await response.update(req.body)
@@ -48,6 +50,7 @@ const update = async (req, res, next) => {
 }
 
 const getById = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await ProductModel.findByPk(req.params.id)
     res.json(response)
@@ -57,6 +60,7 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const query = buildSearchAndPagination(pathOr({}, ['query'], req))
   try {
     const { count, rows } = await ProductModel.findAndCountAll(query)

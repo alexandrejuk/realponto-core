@@ -23,6 +23,12 @@ const Order = (sequelize) => {
       }
     })
 
+    models.order.belongsTo(models.company, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+
     models.order.belongsTo(models.user, {
       foreignKey: {
         allowNull: true,
@@ -42,6 +48,12 @@ const Order = (sequelize) => {
     })
 
     models.order.hasMany(models.serialNumber, {
+      foreignKey: {
+        allowNull: false,
+      }
+    })
+
+    models.order.hasMany(models.orderProduct, {
       foreignKey: {
         allowNull: false,
       }

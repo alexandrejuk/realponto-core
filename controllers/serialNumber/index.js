@@ -13,6 +13,7 @@ const include = [
 ]
 
 const create = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const transaction = await database.transaction()
 
   const serial_numbers = pathOr([], ['body', 'serial_numbers'], req)
@@ -56,6 +57,7 @@ const create = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const transaction_out_id = pathOr(null, ['body', 'transaction_out_id'], req)
   const update_serial_number = pathOr(null, ['body', 'serial_number'], req)
   const serial_number = pathOr(null, ['params', 'serialNumber'], req)
@@ -91,6 +93,7 @@ const update = async (req, res, next) => {
 }
 
 const getById = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const serial_number = pathOr(null, ['params', 'serialNumber'], req)
   try {
     const response = await SerialNumberModel.findOne({ where: { serial_number }})
@@ -101,6 +104,7 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await SerialNumberModel.findAll({ include })
     res.json(response)

@@ -6,6 +6,8 @@ const buildPagination = require('../../utils/helpers/searchSpec')
 const buildSearchAndPagination = buildPagination('user')
 
 const create = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
+
   try {
     const password = await hash(req.body.password, 10)
     const response = await UserModel.create({ ...req.body, password })
@@ -16,6 +18,7 @@ const create = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const userWithoutPwd = omit(['password'], req.body)
   const userId = pathOr(null, ['params', 'id'], req)
   try {
@@ -30,6 +33,7 @@ const update = async (req, res, next) => {
 }
 
 const getById = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await UserModel.findByPk(req.params.id)
     res.json(response)
@@ -39,6 +43,7 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const query = buildSearchAndPagination(pathOr({}, ['query'], req))
   try {
     const { count, rows } = await UserModel.findAndCountAll(query)
@@ -49,6 +54,7 @@ const getAll = async (req, res, next) => {
 }
 
 const updatePassword = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const password = pathOr(null, ['body', 'password'], req)
   const newPassword = pathOr(null, ['body', 'newPassword'], req)
   const userId = pathOr(null, ['params', 'id'], req)

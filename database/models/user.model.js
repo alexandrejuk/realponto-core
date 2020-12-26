@@ -18,10 +18,29 @@ const User = (sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
+    },
+    phone: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
+    },
     username: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true,
+    },
+    birthday:  {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
+    },
+    document:  {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
     },
     password: {
       type: Sequelize.STRING,
@@ -33,6 +52,14 @@ const User = (sequelize) => {
       defaultValue: true,
     },
   })
+
+  User.associate = (models) => {
+    models.user.belongsTo(models.company, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+  }
 
   return User
 }

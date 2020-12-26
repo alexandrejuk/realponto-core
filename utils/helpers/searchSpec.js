@@ -106,7 +106,7 @@ const parserDateGteAndLteForCreatedAt = values => {
 }
 
 const getColor = propName => values => {
-  let color = pathOr(null, ['color'], values)
+  let color = pathOr(null, [propName], values)
   if (color) {
     return concat('#', color)
   }
@@ -201,6 +201,8 @@ const searchSpecs = {
   user: pipe(
     applySpec({
       name: iLikeOperation('name'),
+      phone: iLikeOperation('phone'),
+      email: iLikeOperation('email'),
       document: pathOr(null, ['document']),
       createdAt: parserDateGteAndLte('createdAt'),
       updatedAt: parserDateGteAndLte('updatedAt'),

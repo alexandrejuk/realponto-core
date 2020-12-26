@@ -28,6 +28,12 @@ const OrderProduct = (sequelize) => {
       }
     })
 
+    models.orderProduct.belongsTo(models.company, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+
     models.orderProduct.belongsTo(models.status, {
       foreignKey: {
         allowNull: false,

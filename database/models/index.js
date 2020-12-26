@@ -7,6 +7,7 @@ const User = require('./user.model')
 const SerialNumber = require('./serialNumber.model')
 const Status = require('./status.model')
 const OrderProduct = require('./orderProduct.model')
+const Company = require('./company.model')
 
 module.exports = [
   Balance,
@@ -18,4 +19,5 @@ module.exports = [
   SerialNumber,
   Status,
   OrderProduct,
+  Company,
 ]

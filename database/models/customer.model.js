@@ -7,7 +7,7 @@ const Customer = (sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
-      defaultValue: uuidv4Generator('co_')
+      defaultValue: uuidv4Generator('cu_')
     },
     name: {
       type: Sequelize.STRING,
@@ -19,6 +19,14 @@ const Customer = (sequelize) => {
       unique: true,
     },
   })
+
+  Customer.associate = (models) => {
+    models.customer.belongsTo(models.company, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+  }
 
   return Customer
 }

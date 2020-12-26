@@ -82,7 +82,7 @@ const include = [
   },
   {
     model: TransactionModel,
-    attributes: ['quantity', 'id'],
+    attributes: ['quantity', 'id', 'productId'],
     include: [
       {
         model: ProductModel,
@@ -98,6 +98,15 @@ const include = [
       },
     ]
   },
+  {
+    model: OrderProductModel,
+    include: [
+      {
+        model: StatusModel,
+        attributes: [ 'value', 'color', 'typeLabel']
+      },
+    ]
+  }
 ]
 
 const statusBlockOnCreate = {
@@ -155,6 +164,7 @@ const create = async (req, res, next) => {
   const customerId = pathOr(null, ['body', 'customerId'], req)
   const userId = pathOr(null, ['body', 'userId'], req)
   const createdBy = pathOr('us_a92a34bf-d0fc-4967-b78a-0ddf2955de4c', ['decoded', 'user', 'id'], req)
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const pendingReview = pathOr(false, ['body', 'pendingReview'], req)
   const products = pathOr([], ['body', 'products'], req)
 
@@ -223,9 +233,12 @@ const create = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
+
 }
 
 const getById = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
     const response = await OrderModel.findByPk(req.params.id, { include })
     res.json(response)
@@ -235,6 +248,7 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const { where, offset, limit } = buildSearchAndPagination(req.query)
   const setWhereOnInclude = includeValues.map(includeValue => {
     const wheres = omit(['orderWhere'], where)
@@ -292,6 +306,7 @@ const getAll = async (req, res, next) => {
 
 
 const getSummaryToChart = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const { where, offset, limit } = buildSearchAndPagination(req.query)
 
   const orderWhere = (
