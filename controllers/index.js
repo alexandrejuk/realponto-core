@@ -6,8 +6,10 @@ const serialNumberController = require('./serialNumber')
 const authenticationController = require('./authentication')
 const transactionController = require('./transaction')
 const statusController = require('./status')
+const companyController = require('./company')
 
 module.exports = {
+  companyController,
   productController,
   userController,
   customerController,

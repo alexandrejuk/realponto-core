@@ -1,33 +1,16 @@
 'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('transactions', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('orders', {
     id: {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
     },
-    quantity: {
-      type: Sequelize.INTEGER,
+    pendingReview: {
+      type: Sequelize.BOOLEAN,
       allowNull: false,
-    },
-    userId: {
-      type: Sequelize.STRING,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'restrict',
-    },
-    productId: {
-      type: Sequelize.STRING,
-      references: {
-        model: 'products',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'restrict',
+      defaultValue: false,
     },
     statusId: {
       type: Sequelize.STRING,
@@ -38,10 +21,28 @@ module.exports = {
       onUpdate: 'cascade',
       onDelete: 'restrict',
     },
-    orderId: {
+    customerId: {
       type: Sequelize.STRING,
       references: {
-        model: 'orders',
+        model: 'customers',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'restrict',
+    },
+    userId: {
+      type: Sequelize.STRING,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'restrict',
+    },
+    companyId: {
+      type: Sequelize.STRING,
+      references: {
+        model: 'companies',
         key: 'id',
       },
       onUpdate: 'cascade',
@@ -58,5 +59,5 @@ module.exports = {
       defaultValue: new Date(),
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('transactions')
+  down: (queryInterface) => queryInterface.dropTable('orders')
 };

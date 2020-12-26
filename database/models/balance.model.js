@@ -25,7 +25,7 @@ const Balance = (sequelize) => {
 
     models.balance.belongsTo(models.company, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
   }

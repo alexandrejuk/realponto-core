@@ -51,7 +51,7 @@ const SerialNumber = (sequelize) => {
 
     models.serialNumber.belongsTo(models.company, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
   }

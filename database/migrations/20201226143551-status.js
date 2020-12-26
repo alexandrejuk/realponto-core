@@ -1,52 +1,44 @@
 'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('serialNumbers', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('statuses', {
     id: {
-      type: Sequelize.STRING,
       allowNull: false,
+      type: Sequelize.STRING,
       primaryKey: true,
-    },
-    serialNumber: {
-      type: Sequelize.STRING,
-      allowNull: false,
     },
     activated: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: true,
     },
-    transactionInId: {
+    label: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    value: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    color: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    transactionOutId: {
-      type: Sequelize.STRING,
-      allowNull: true,
-      defaultValue: null,
+    type: {
+      type: Sequelize.ENUM(['inputs', 'outputs']),
+      allowNull: false,
+      defaultValue: 'inputs',
     },
-    orderId: {
+    typeLabel: {
+      type: Sequelize.ENUM(['Entrada', 'Saída']),
+      allowNull: false,
+    },
+    companyId: {
       type: Sequelize.STRING,
       references: {
-        model: 'orders',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'restrict',
-    },
-    userId: {
-      type: Sequelize.STRING,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'restrict',
-    },
-    productId: {
-      type: Sequelize.STRING,
-      references: {
-        model: 'products',
+        model: 'companies',
         key: 'id',
       },
       onUpdate: 'cascade',
@@ -63,5 +55,5 @@ module.exports = {
       defaultValue: new Date(),
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('serialNumbers')
+  down: queryInterface => queryInterface.dropTable('statuses'),
 }

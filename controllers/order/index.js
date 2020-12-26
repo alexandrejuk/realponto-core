@@ -143,8 +143,9 @@ const quantityTotalProducts = (curr, prev) => {
 const updateBalance = typeEvent => async ({
   productId,
   quantity,
+  companyId,
 }) => {
-  const productBalance = await BalanceModel.findOne({ where: { productId }})
+  const productBalance = await BalanceModel.findOne({ where: { productId, companyId }})
   if (productBalance) {
     await productBalance.update({
       quantity: (
@@ -200,6 +201,7 @@ const create = async (req, res, next) => {
       userId,
       customerId,
       pendingReview,
+      companyId,
     }, { transaction, include })
 
     const orderId = response.id
@@ -208,12 +210,14 @@ const create = async (req, res, next) => {
       ...product,
       orderId,
       userId: createdBy,
+      companyId,
     }))
 
     const productOrder = (product) => ({
       ...product,
       userId: createdBy,
-      orderId: response.id
+      orderId: response.id,
+      companyId,
     })
 
     const productsPayload = map(formmatProduct, products)
@@ -240,7 +244,7 @@ const update = async (req, res, next) => {
 const getById = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
-    const response = await OrderModel.findByPk(req.params.id, { include })
+    const response = await OrderModel.findOne({ where: { companyId, id: req.params.id }}, { include })
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -249,7 +253,10 @@ const getById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
-  const { where, offset, limit } = buildSearchAndPagination(req.query)
+  const { where, offset, limit } = buildSearchAndPagination({
+    ...req.query,
+    companyId,
+  })
   const setWhereOnInclude = includeValues.map(includeValue => {
     const wheres = omit(['orderWhere'], where)
     const includeWhereAdd = wheres[includeValue.model.name]

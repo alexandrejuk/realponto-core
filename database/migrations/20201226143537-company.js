@@ -1,13 +1,11 @@
-const Sequelize = require('sequelize')
-const uuidv4Generator = require('../../utils/helpers/hash')
+'use strict'
 
-const Company = (sequelize) => {
-  const Company = sequelize.define('company', {
+module.exports = {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('companies', {
     id: {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
-      defaultValue: uuidv4Generator('co_')
     },
     name: {
       type: Sequelize.STRING,
@@ -56,9 +54,16 @@ const Company = (sequelize) => {
       allowNull: false,
       defaultValue: false,
     },
-  })
-
-  return Company
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: new Date(),
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+      defaultValue: new Date(),
+    },
+  }),
+  down: queryInterface => queryInterface.dropTable('companies'),
 }
-
-module.exports = Company

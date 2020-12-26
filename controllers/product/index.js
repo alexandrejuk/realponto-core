@@ -19,6 +19,7 @@ const create = async (req, res, next) => {
           [like]: '%'+ req.body.name +'%',
         },
         activated: true,
+        companyId,
       }
     })
 
@@ -26,8 +27,8 @@ const create = async (req, res, next) => {
       throw new Error('Allow only one product with name activated')
     }
 
-    const response = await ProductModel.create(req.body, { transaction })
-    await BalanceModel.create({ productId: response.id }, { transaction })
+    const response = await ProductModel.create({...req.body, companyId }, { transaction })
+    await BalanceModel.create({ productId: response.id, companyId }, { transaction })
 
     await transaction.commit()
     res.json(response)
@@ -40,7 +41,7 @@ const create = async (req, res, next) => {
 const update = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
-    const response = await ProductModel.findByPk(req.params.id)
+    const response = await ProductModel.findOne({ where: { companyId, id: req.params.id }})
     await response.update(req.body)
     await response.reload()
     res.json(response)
@@ -52,7 +53,7 @@ const update = async (req, res, next) => {
 const getById = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
-    const response = await ProductModel.findByPk(req.params.id)
+    const response = await ProductModel.findOne({ where: { companyId, id: req.params.id }})
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -61,7 +62,10 @@ const getById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
-  const query = buildSearchAndPagination(pathOr({}, ['query'], req))
+  const query = buildSearchAndPagination({
+    ...pathOr({}, ['query'], req),
+    companyId,
+  })
   try {
     const { count, rows } = await ProductModel.findAndCountAll(query)
     res.json({ total: count, source: rows })

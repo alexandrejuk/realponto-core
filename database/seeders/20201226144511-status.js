@@ -10,6 +10,7 @@ module.exports = {
         color: '#5DA0FC',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_71a2300c-0a5e-4f22-b19a-c90b9c6c9efb',
@@ -18,6 +19,7 @@ module.exports = {
         color: '#268E86',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_6ac1c28d-ec4b-4a07-b9c9-02fff41a85ba',
@@ -26,6 +28,7 @@ module.exports = {
         color: '#F29F03',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_d8abf7e8-500c-4679-b32b-e8a999c2899b',
@@ -34,6 +37,7 @@ module.exports = {
         color: '#1772C9',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_1aad3f7b-79fc-4d21-b809-32b9c46f2937',
@@ -42,6 +46,7 @@ module.exports = {
         color: '#EA5656',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_e4921b5d-22ba-4696-97e9-03a704e0194b',
@@ -50,6 +55,7 @@ module.exports = {
         color: '#7550D8',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_f0511bbf-4373-45a3-afea-f02da0df8b15',
@@ -58,6 +64,7 @@ module.exports = {
         color: '#2D2D2D',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_8c067e96-b95f-4570-b6bc-db25a6ed693a',
@@ -66,6 +73,7 @@ module.exports = {
         color: '#F29F03',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_5ea743dc-d9fb-4960-9f3c-493f05b99c8e',
@@ -74,6 +82,7 @@ module.exports = {
         color: '#D588F2',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_47d942cc-4046-479f-9868-3ccf85b14354',
@@ -82,6 +91,7 @@ module.exports = {
         color: '#F2CB03',
         type: 'outputs',
         typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_dc093433-1fa0-409e-9c54-99488c3351fe',
@@ -90,6 +100,7 @@ module.exports = {
         color: '#17C9B2',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_0f18206c-ce15-427f-a1b8-64b8ac3799ec',
@@ -98,6 +109,7 @@ module.exports = {
         color: '#7250D8',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_f49604ac-aea2-45dc-8aaa-d5486694ead7',
@@ -106,6 +118,7 @@ module.exports = {
         color: '#5D3F90',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_dcfa0308-227f-45f1-a7ac-cedfc22fd7a5',
@@ -114,6 +127,7 @@ module.exports = {
         color: '#CC3A4F',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_618527e3-a827-4390-93d4-d263e2a06517',
@@ -122,6 +136,7 @@ module.exports = {
         color: '#984141',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_d825c34d-4a5d-417b-99f6-3ef730ef158e',
@@ -130,6 +145,7 @@ module.exports = {
         color: '#264ABE',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_a479f58b-5435-40b2-b403-66d105b3fa03',
@@ -138,6 +154,7 @@ module.exports = {
         color: '#F50',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_ec818f68-414d-4e96-a05d-ada97a3fc689',
@@ -146,6 +163,7 @@ module.exports = {
         color: '#2db7f5',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_5b3033fe-dbf8-4d8c-a968-2afb09eaacbb',
@@ -154,6 +172,7 @@ module.exports = {
         color: '#87d068',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_df538152-9d00-4fcc-a9a7-5b5f8cd5c36e',
@@ -162,6 +181,7 @@ module.exports = {
         color: '#108ee9',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_e8ef341d-36ac-441b-bce3-3121e182d0ae',
@@ -170,6 +190,7 @@ module.exports = {
         color: '#0052cc',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_a7e960a7-11d1-4a4c-98ee-1dfad07095e6',
@@ -178,6 +199,7 @@ module.exports = {
         color: '#A5D0A5',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_e845b1ef-1bcb-43ee-87a0-cc5bd2fba3ba',
@@ -186,6 +208,7 @@ module.exports = {
         color: '#171383',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       },
       {
         id: 'st_e4563129-7a0b-40ff-944b-929394b6183a',
@@ -194,6 +217,7 @@ module.exports = {
         color: '#5666C8',
         type: 'inputs',
         typeLabel: 'Entrada',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
       }
     ], {}),
 

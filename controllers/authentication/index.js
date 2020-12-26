@@ -7,16 +7,16 @@ const UserModel = database.model('user')
 const secret = 'process.env.SECRET'
 
 const authentication = async (req, res, next) => {
-  const username = pathOr(null, ['body', 'username'], req)
+  const email = pathOr(null, ['body', 'email'], req)
   const password = pathOr(null, ['body', 'password'], req)
 
  try {
-  const user = await UserModel.findOne({ where: { username }, raw: true })
+  const user = await UserModel.findOne({ where: { email }, raw: true })
   const userWithoutPwd = omit(['password'], user)
   const checkedPassword = await compare(password, user.password)
 
   if(!checkedPassword) {
-    throw new Error('Username or password do not match')
+    throw new Error('Email or password do not match')
   }
 
   const token = jwt.sign({ user: userWithoutPwd }, secret, { expiresIn: '24h'})

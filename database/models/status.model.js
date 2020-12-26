@@ -42,7 +42,7 @@ const Status = (sequelize) => {
   Status.associate = (models) => {
     models.status.belongsTo(models.company, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
   }

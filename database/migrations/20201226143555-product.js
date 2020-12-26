@@ -21,6 +21,15 @@ module.exports = {
       allowNull: false,
       defaultValue: 5,
     },
+    companyId: {
+      type: Sequelize.STRING,
+      references: {
+        model: 'companies',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'restrict',
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

@@ -16,10 +16,25 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    username: {
+    email: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
+    },
+    phone: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
+    },
+    birthday:  {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
+    },
+    document:  {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: '',
     },
     password: {
       type: Sequelize.STRING,
@@ -29,6 +44,15 @@ module.exports = {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: true,
+    },
+    companyId: {
+      type: Sequelize.STRING,
+      references: {
+        model: 'companies',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'restrict',
     },
     createdAt: {
       allowNull: false,

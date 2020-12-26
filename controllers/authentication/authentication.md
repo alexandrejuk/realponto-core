@@ -2,7 +2,7 @@
 
 ```json
 {
-  "username": "alenxadre.soares",
+  "email": "email@email.com",
   "password": "123456"
 }
 ```

@@ -23,7 +23,7 @@ const Customer = (sequelize) => {
   Customer.associate = (models) => {
     models.customer.belongsTo(models.company, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
   }

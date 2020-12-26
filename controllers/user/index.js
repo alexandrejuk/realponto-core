@@ -1,6 +1,7 @@
 const { omit, pathOr } = require('ramda')
 const database = require('../../database')
 const UserModel = database.model('user')
+const CompanyModel = database.model('company')
 const { hash, compare } = require('bcrypt')
 const buildPagination = require('../../utils/helpers/searchSpec')
 const buildSearchAndPagination = buildPagination('user')
@@ -9,9 +10,16 @@ const create = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
 
   try {
-    const password = await hash(req.body.password, 10)
-    const response = await UserModel.create({ ...req.body, password })
+    const findCompany = await CompanyModel.findByPk(companyId)
+    const password = await hash(findCompany.passwordUserDefault, 10)
+    const response = await UserModel.create({
+      ...req.body,
+      password,
+      companyId,
+    })
+
     res.json(response)
+    console.log(findCompany)
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
@@ -33,9 +41,11 @@ const update = async (req, res, next) => {
 }
 
 const getById = async (req, res, next) => {
+  const id = pathOr(null, ['params', 'id'], req)
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
-    const response = await UserModel.findByPk(req.params.id)
+    console.log(id)
+    const response = await UserModel.findOne({ where: { companyId, id }})
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -44,8 +54,12 @@ const getById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
-  const query = buildSearchAndPagination(pathOr({}, ['query'], req))
+  const query = buildSearchAndPagination({
+    ...pathOr({}, ['query'], req),
+    companyId,
+  })
   try {
+    console.log(companyId)
     const { count, rows } = await UserModel.findAndCountAll(query)
     res.json({ total: count, source: rows })
   } catch (error) {
@@ -60,7 +74,7 @@ const updatePassword = async (req, res, next) => {
   const userId = pathOr(null, ['params', 'id'], req)
 
   try {
-    const response = await UserModel.findOne({ where: { id: userId, activated: true }})
+    const response = await UserModel.findOne({ where: { id: userId, companyId, activated: true }})
     const checkedPassword = await compare(password, response.password)
 
     if(!checkedPassword) {

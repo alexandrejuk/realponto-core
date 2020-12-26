@@ -25,7 +25,7 @@ const Order = (sequelize) => {
 
     models.order.belongsTo(models.company, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
 

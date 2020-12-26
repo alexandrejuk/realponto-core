@@ -17,7 +17,7 @@ const OrderProduct = (sequelize) => {
     quantity: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      defaultValue: false,
+      defaultValue: 0,
     },
   })
 
@@ -30,7 +30,7 @@ const OrderProduct = (sequelize) => {
 
     models.orderProduct.belongsTo(models.company, {
       foreignKey: {
-        allowNull: true,
+        allowNull: false,
       }
     })
 

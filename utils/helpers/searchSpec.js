@@ -149,12 +149,14 @@ const removeFiledsNilOrEmpty = values => {
 const orderSpec = applySpec({
   user: pipe(
     applySpec({
+      companyId: pathOr(null, ['companyId']),
       name: iLikeOperation('user_name'),
     }),
     removeFiledsNilOrEmpty
   ),
   customer: pipe(
     applySpec({
+      companyId: pathOr(null, ['companyId']),
       name: iLikeOperation('customer_name'),
       document: pathOr(null, ['customer_document']),
     }),
@@ -162,6 +164,7 @@ const orderSpec = applySpec({
   ),
   status: pipe(
     applySpec({
+      companyId: pathOr(null, ['companyId']),
       value: iLikeOperation('status_value'),
       typeLabel: pathOr(null, ['status_typeLabel']),
     }),
@@ -170,11 +173,13 @@ const orderSpec = applySpec({
   transaction: pipe(
     applySpec({
       name: iLikeOperation('product_name'),
+      companyId: pathOr(null, ['companyId']),
     }),
     removeFiledsNilOrEmpty
   ),
   orderWhere: pipe(
     applySpec({
+      companyId: pathOr(null, ['companyId']),
       pendingReview: pathOr(null, ['pendingReview']),
       createdAt: parserDateGteAndLteForCreatedAt,
       updatedAt: parserDateGteAndLte('updatedAt'),
@@ -188,6 +193,7 @@ const searchSpecs = {
     applySpec({
       id: pathOr(null, ['id']),
       activated: pathOr(null, ['activated']),
+      companyId: pathOr(null, ['companyId']),
       label: iLikeOperation('label'),
       value: iLikeOperation('value'),
       color: getColor('color'),
@@ -203,6 +209,7 @@ const searchSpecs = {
       name: iLikeOperation('name'),
       phone: iLikeOperation('phone'),
       email: iLikeOperation('email'),
+      companyId: pathOr(null, ['companyId']),
       document: pathOr(null, ['document']),
       createdAt: parserDateGteAndLte('createdAt'),
       updatedAt: parserDateGteAndLte('updatedAt'),
@@ -213,6 +220,7 @@ const searchSpecs = {
     applySpec({
       activated: pathOr(null, ['activated']),
       name: iLikeOperation('name'),
+      companyId: pathOr(null, ['companyId']),
       minQuantity: minQuantityParser('minQuantity'),
       createdAt: parserDateGteAndLte('createdAt'),
       updatedAt: parserDateGteAndLte('updatedAt'),
@@ -225,6 +233,7 @@ const searchSpecs = {
     applySpec({
       name: iLikeOperation('name'),
       document: pathOr(null, ['document']),
+      companyId: pathOr(null, ['companyId']),
       createdAt: parserDateGteAndLte('createdAt'),
       updatedAt: parserDateGteAndLte('updatedAt'),
     }),
