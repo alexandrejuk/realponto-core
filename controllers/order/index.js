@@ -388,7 +388,6 @@ const getAll = async (req, res, next) => {
       ? { where: { companyId }}
       : { where: where.orderWhere }
   )
-  console.log(setWhereOnInclude)
   try {
     const response = await OrderModel.findAll(
       {

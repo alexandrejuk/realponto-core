@@ -5,6 +5,17 @@ module.exports = {
     [
       {
         id: 'st_694b1df8-f825-4621-910b-6cf73067791d',
+        label: 'delivery',
+        value: 'Entregue',
+        color: '#5DA0FC',
+        type: 'outputs',
+        typeLabel: 'Saída',
+        companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 'st_694b1df8-f825-4621-910b-6cf73067791d',
         label: 'sale',
         value: 'Venda',
         color: '#5DA0FC',
