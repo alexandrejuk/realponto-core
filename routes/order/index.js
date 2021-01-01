@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { orderController } = require('../../controllers')
 
+router.put('/orders-finished/:id', orderController.finishedOrder)
 router.post('/orders', orderController.create)
 router.get('/orders-summary', orderController.getSummaryToChart)
 router.get('/orders', orderController.getAll)

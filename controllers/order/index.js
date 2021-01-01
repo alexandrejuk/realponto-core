@@ -407,11 +407,11 @@ const getAll = async (req, res, next) => {
 
 const getSummaryToChart = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
-  const { where, offset, limit } = buildSearchAndPagination(req.query)
+  const { where, offset, limit } = buildSearchAndPagination({ ...req.query, companyId })
 
   const orderWhere = (
     isEmpty(where.orderWhere)
-      ? {}
+      ? { where: { companyId } }
       : { where: where.orderWhere }
   )
   try {
@@ -439,10 +439,26 @@ const getSummaryToChart = async (req, res, next) => {
     res.status(400).json({ error: error.message })
   }
 }
+
+const finishedOrder = async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
+  const id = pathOr(null, ['params', 'id'], req)
+  try {
+    const response = await OrderModel.findOne({ where: { companyId, id }, include })
+    await response.update({ pendingReview: false })
+    await response.reload()
+    res.json(response)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
+
 module.exports = {
   create,
   update,
   getById,
   getAll,
   getSummaryToChart,
+  finishedOrder,
 }
