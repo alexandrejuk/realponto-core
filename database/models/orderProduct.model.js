@@ -12,7 +12,6 @@ const OrderProduct = (sequelize) => {
     productName: {
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: false,
     },
     quantity: {
       type: Sequelize.INTEGER,

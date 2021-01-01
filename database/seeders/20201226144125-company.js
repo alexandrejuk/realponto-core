@@ -10,6 +10,8 @@ module.exports = {
     siteUrl: 'www.mycompany.com.br',
     allowOrder: true,
     allowPdv: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   }], {}),
   down: (queryInterface) => queryInterface.bulkDelete('companies', null, {}),
 }

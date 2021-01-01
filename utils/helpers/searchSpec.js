@@ -149,14 +149,12 @@ const removeFiledsNilOrEmpty = values => {
 const orderSpec = applySpec({
   user: pipe(
     applySpec({
-      companyId: pathOr(null, ['companyId']),
       name: iLikeOperation('user_name'),
     }),
     removeFiledsNilOrEmpty
   ),
   customer: pipe(
     applySpec({
-      companyId: pathOr(null, ['companyId']),
       name: iLikeOperation('customer_name'),
       document: pathOr(null, ['customer_document']),
     }),
@@ -164,7 +162,6 @@ const orderSpec = applySpec({
   ),
   status: pipe(
     applySpec({
-      companyId: pathOr(null, ['companyId']),
       value: iLikeOperation('status_value'),
       typeLabel: pathOr(null, ['status_typeLabel']),
     }),

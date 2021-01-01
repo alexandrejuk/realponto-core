@@ -43,7 +43,7 @@ const includeValues = [
       },
       {
         model: StatusModel,
-        attributes: [ 'value', 'color', 'typeLabel']
+        attributes: [ 'value', 'color', 'typeLabel', 'type']
       },
       {
         model: UserModel,
@@ -60,7 +60,7 @@ const include = [
   },
   {
     model: CustomerModel,
-    attributes: ['name']
+    attributes: ['name', 'document', 'phone']
   },
   {
     model: StatusModel,
@@ -94,7 +94,7 @@ const include = [
       },
       {
         model: StatusModel,
-        attributes: [ 'value', 'color', 'typeLabel']
+        attributes: [ 'value', 'color', 'typeLabel', 'type', 'label']
       },
     ]
   },
@@ -103,7 +103,7 @@ const include = [
     include: [
       {
         model: StatusModel,
-        attributes: [ 'value', 'color', 'typeLabel']
+        attributes: [ 'value', 'color', 'typeLabel', 'label']
       },
     ]
   }
@@ -115,14 +115,14 @@ const statusBlockOnCreate = {
   pending_analysis: true,
 }
 
-const quantityTotalProducts = (curr, prev) => {
+const quantityTotalProducts = companyId => (curr, prev) => {
   const findCurrent = curr.find(propEq('productId', prev.productId))
 
   if (findCurrent) {
-    const sumQuantity = product => ({
+    const sumQuantity = product => product.productId === prev.product.id ? ({
       ...product,
       quantity: product.quantity + prev.quantity,
-    })
+    }) : product
 
     curr = curr.map(sumQuantity)
   }
@@ -132,7 +132,8 @@ const quantityTotalProducts = (curr, prev) => {
       ...curr,
       {
         productId: prev.productId,
-        quantity: prev.quantity
+        quantity: prev.quantity,
+        companyId,
       }
     ]
   }
@@ -171,6 +172,7 @@ const create = async (req, res, next) => {
 
   try {
     const findStatus = await StatusModel.findByPk(statusId, { raw: true })
+    const pendingReviewStatus = await StatusModel.findOne({ where: { label: 'pending_analysis' }})
 
     if (!findStatus) {
       // se o status não estiver cadastrado não podemos criar a ordem
@@ -183,7 +185,6 @@ const create = async (req, res, next) => {
       throw new Error(`cannot create a order with status ${findStatus.label}!`)
     }
 
-    console.log('userId', userId,customerId)
     if (findStatus.label !== 'booking' && !userId && !customerId ) {
       // somente ordens com o status booking pode ser criada sem usuário ou
       // cliente
@@ -203,11 +204,10 @@ const create = async (req, res, next) => {
       pendingReview,
       companyId,
     }, { transaction, include })
-
     const orderId = response.id
-
     const formmatProduct = product => omit(['productName'], ({
       ...product,
+      statusId: product.statusId === 'pending_analysis' ? pendingReviewStatus.id : product.statusId,
       orderId,
       userId: createdBy,
       companyId,
@@ -215,6 +215,7 @@ const create = async (req, res, next) => {
 
     const productOrder = (product) => ({
       ...product,
+      statusId: product.statusId === 'pending_analysis' ? pendingReviewStatus.id : product.statusId,
       userId: createdBy,
       orderId: response.id,
       companyId,
@@ -222,7 +223,7 @@ const create = async (req, res, next) => {
 
     const productsPayload = map(formmatProduct, products)
     const orderProductsPayload = map(productOrder, products)
-    const productsTotal = products.reduce(quantityTotalProducts, [])
+    const productsTotal = products.reduce(quantityTotalProducts(companyId), [])
 
     await TransactionModel.bulkCreate(productsPayload, { transaction })
     await OrderProductModel.bulkCreate(orderProductsPayload, { transaction })
@@ -237,14 +238,105 @@ const create = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
+  const orderId = pathOr(null, ['params', 'id'], req)
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
+  const payload = pathOr({}, ['body'], req)
+  const orderProductId = pathOr(null, ['body', 'orderProductId'], req)
+
+  try {
+    const response = await OrderModel.findOne({ where: { companyId, id: orderId }, include})
+    const findStatus = await StatusModel.findByPk(payload.statusId, { raw: true })
+    const transactions = await TransactionModel.findAll({
+        where: {
+          companyId,
+          productId: payload.productId,
+          orderId,
+        },
+        include: [{
+          model: StatusModel,
+        }],
+        raw: true
+      })
+
+    const situation = transactions.reduce((curr, prev) => {
+      if (curr[prev['status.label']]) {
+        curr = {
+          ...curr,
+          [prev['status.label']]: curr[prev['status.label']] + prev.quantity
+        }
+      }
+
+      if (!curr[prev['status.label']]) {
+        curr = {
+          ...curr,
+          [prev['status.label']]: prev.quantity
+        }
+      }
+
+      return curr
+    }, {
+      in_analysis: 0,
+      pending_analysis: 0,
+      analysis_return: 0,
+    })
+
+    if ((situation.analysis_return + payload.quantity) === situation.pending_analysis) {
+      const updateProductOrder = await OrderProductModel.findOne({ where: { id: orderProductId }})
+      await updateProductOrder.update({ statusId: response.statusId })
+    }
+
+    if (findStatus.type === 'inputs' && (situation.analysis_return === situation.pending_analysis)) {
+      const updateProductOrder = await OrderProductModel.findOne({ where: { id: orderProductId }})
+      await updateProductOrder.update({ statusId: response.statusId })
+      throw new Error('quantity send not allow')
+    }
+
+    if (findStatus.type === 'outputs' && (situation.in_analysis === situation.pending_analysis)) {
+      throw new Error('quantity send not allow')
+    }
+
+    if (findStatus.type === 'outputs' && payload.quantity > situation.pending_analysis) {
+      throw new Error('quantity send not allow')
+    }
+
+    if (findStatus.type === 'outputs' && (payload.quantity + situation.in_analysis) > situation.pending_analysis) {
+      throw new Error('quantity send not allow')
+    }
+
+    if (findStatus.type === 'outputs' && (payload.quantity + situation.analysis_return) > situation.pending_analysis) {
+      throw new Error('quantity send not allow')
+    }
+
+    if (findStatus.type === 'inputs' && payload.quantity > (situation.in_analysis - situation.analysis_return)) {
+      throw new Error('quantity send not allow')
+    }
+
+    if (findStatus.type === 'inputs' && situation.in_analysis === situation.analysis_return) {
+      throw new Error('quantity send not allow')
+    }
+
+    await TransactionModel.create({
+      ...payload,
+      orderId,
+      companyId,
+    })
+
+    await Promise.all(map(updateBalance(findStatus.type), [{
+      ...payload,
+      companyId,
+    }]))
+
+    res.json(response)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
 
 }
 
 const getById = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   try {
-    const response = await OrderModel.findOne({ where: { companyId, id: req.params.id }}, { include })
+    const response = await OrderModel.findOne({ where: { companyId, id: req.params.id }, include})
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -279,7 +371,7 @@ const getAll = async (req, res, next) => {
           },
           {
             model: StatusModel,
-            attributes: [ 'value', 'color', 'typeLabel']
+            attributes: [ 'value', 'color', 'typeLabel', 'type']
           },
         ]
       }
@@ -293,20 +385,21 @@ const getAll = async (req, res, next) => {
 
   const orderWhere = (
     isEmpty(where.orderWhere)
-      ? {}
+      ? { where: { companyId }}
       : { where: where.orderWhere }
   )
-
+  console.log(setWhereOnInclude)
   try {
-    const { rows } = await OrderModel.findAndCountAll({
+    const response = await OrderModel.findAll(
+      {
       ...orderWhere,
       include: setWhereOnInclude,
       offset,
       limit,
-    })
-    res.json({ total: rows.length, source: rows })
+    }
+    )
+    res.json({ total: response.length, source: response  })
   } catch (error) {
-    console.log(error)
     res.status(400).json({ error: error.message })
   }
 }

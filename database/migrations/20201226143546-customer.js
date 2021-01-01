@@ -16,6 +16,10 @@ module.exports = {
       allowNull: false,
       unique: true,
     },
+    phone: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     companyId: {
       type: Sequelize.STRING,
       references: {

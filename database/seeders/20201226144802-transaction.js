@@ -10,6 +10,8 @@ module.exports = {
     statusId:'st_dc093433-1fa0-409e-9c54-99488c3351fe',
     orderId: 'or_b8c2e248-4c84-4301-a03f-952ea72bcf94',
     companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: 'td_a0a703ec-b6c6-4064-afa5-6f2d6dd16e56',
@@ -19,6 +21,8 @@ module.exports = {
     statusId: 'st_dcfa0308-227f-45f1-a7ac-cedfc22fd7a5',
     orderId: 'or_b8c2e248-4c84-4301-a03f-952ea72bcf94',
     companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 
 ], {}),

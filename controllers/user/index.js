@@ -68,10 +68,10 @@ const getAll = async (req, res, next) => {
 }
 
 const updatePassword = async (req, res, next) => {
+  const userId = pathOr(null, ['decoded', 'user', 'id'], req)
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const password = pathOr(null, ['body', 'password'], req)
   const newPassword = pathOr(null, ['body', 'newPassword'], req)
-  const userId = pathOr(null, ['params', 'id'], req)
 
   try {
     const response = await UserModel.findOne({ where: { id: userId, companyId, activated: true }})

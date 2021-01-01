@@ -14,7 +14,6 @@ const parserSummaryData = values => sort(diff, values
   if(curr.length > 0) {
     const findSummary = curr.find(summary => summary.name === prev.name)
     if (findSummary) {
-      console.log(findSummary)
       curr = curr.map(item =>
         item.name === prev.name
           ? ({
@@ -49,7 +48,6 @@ const getStatusSummary = values => values.reduce((curr, prev) => {
 
   if(curr.length > 0) {
     const findSummary = curr.find(summary => summary.color === prev['status.color'])
-    console.log('idn', findSummary)
     if (!findSummary) {
       curr = [
         ...curr,

@@ -11,6 +11,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_71a2300c-0a5e-4f22-b19a-c90b9c6c9efb',
@@ -20,6 +22,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_6ac1c28d-ec4b-4a07-b9c9-02fff41a85ba',
@@ -29,6 +33,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_d8abf7e8-500c-4679-b32b-e8a999c2899b',
@@ -38,6 +44,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_1aad3f7b-79fc-4d21-b809-32b9c46f2937',
@@ -47,6 +55,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_e4921b5d-22ba-4696-97e9-03a704e0194b',
@@ -56,6 +66,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_f0511bbf-4373-45a3-afea-f02da0df8b15',
@@ -65,6 +77,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_8c067e96-b95f-4570-b6bc-db25a6ed693a',
@@ -74,6 +88,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_5ea743dc-d9fb-4960-9f3c-493f05b99c8e',
@@ -83,6 +99,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_47d942cc-4046-479f-9868-3ccf85b14354',
@@ -92,6 +110,8 @@ module.exports = {
         type: 'outputs',
         typeLabel: 'Saída',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_dc093433-1fa0-409e-9c54-99488c3351fe',
@@ -101,6 +121,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_0f18206c-ce15-427f-a1b8-64b8ac3799ec',
@@ -110,6 +132,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_f49604ac-aea2-45dc-8aaa-d5486694ead7',
@@ -119,6 +143,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_dcfa0308-227f-45f1-a7ac-cedfc22fd7a5',
@@ -128,6 +154,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_618527e3-a827-4390-93d4-d263e2a06517',
@@ -137,6 +165,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_d825c34d-4a5d-417b-99f6-3ef730ef158e',
@@ -146,6 +176,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_a479f58b-5435-40b2-b403-66d105b3fa03',
@@ -155,6 +187,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_ec818f68-414d-4e96-a05d-ada97a3fc689',
@@ -164,6 +198,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_5b3033fe-dbf8-4d8c-a968-2afb09eaacbb',
@@ -173,6 +209,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_df538152-9d00-4fcc-a9a7-5b5f8cd5c36e',
@@ -182,6 +220,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_e8ef341d-36ac-441b-bce3-3121e182d0ae',
@@ -191,6 +231,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_a7e960a7-11d1-4a4c-98ee-1dfad07095e6',
@@ -200,6 +242,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_e845b1ef-1bcb-43ee-87a0-cc5bd2fba3ba',
@@ -209,6 +253,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         id: 'st_e4563129-7a0b-40ff-944b-929394b6183a',
@@ -218,6 +264,8 @@ module.exports = {
         type: 'inputs',
         typeLabel: 'Entrada',
         companyId: 'co_4095e6c0-056d-4b6d-b857-a35584634ad0',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }
     ], {}),
 

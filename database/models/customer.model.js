@@ -18,6 +18,10 @@ const Customer = (sequelize) => {
       allowNull: false,
       unique: true,
     },
+    phone: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   })
 
   Customer.associate = (models) => {
@@ -26,6 +30,12 @@ const Customer = (sequelize) => {
         allowNull: false,
       }
     })
+
+    // models.customer.belongsTo(models.address, {
+    //   foreignKey: {
+    //     allowNull: true,
+    //   }
+    // })
   }
 
   return Customer
