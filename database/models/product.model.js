@@ -31,6 +31,13 @@ const Product = (sequelize) => {
         allowNull: true,
       }
     })
+
+    models.product.hasMany(models.transaction, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+
     models.product.belongsTo(models.company, {
       foreignKey: {
         allowNull: false,
