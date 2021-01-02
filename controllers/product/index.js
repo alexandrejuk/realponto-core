@@ -3,6 +3,7 @@ const Sequelize = require('sequelize')
 const database = require('../../database')
 const ProductModel = database.model('product')
 const BalanceModel = database.model('balance')
+
 const buildPagination = require('../../utils/helpers/searchSpec')
 const buildSearchAndPagination = buildPagination('product')
 const { Op } = Sequelize
@@ -67,7 +68,9 @@ const getAll = async (req, res, next) => {
     companyId,
   })
   try {
-    const { count, rows } = await ProductModel.findAndCountAll(query)
+    const { count, rows } = await ProductModel.findAndCountAll({
+      include: [BalanceModel]
+    })
     res.json({ total: count, source: rows })
   } catch (error) {
     res.status(400).json({ error: error.message })

@@ -43,6 +43,12 @@ const Product = (sequelize) => {
         allowNull: false,
       }
     })
+
+    models.product.hasMany(models.balance, {
+      foreignKey: {
+        allowNull: false,
+      }
+    })
   }
 
   return Product

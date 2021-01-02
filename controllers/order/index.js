@@ -326,6 +326,8 @@ const update = async (req, res, next) => {
       companyId,
     }]))
 
+    await response.reload()
+
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
