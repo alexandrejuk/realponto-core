@@ -225,7 +225,15 @@ const searchSpecs = {
     removeFiledsNilOrEmpty,
   ),
   order: orderSpec,
-  serialNumber: {},
+  serialNumber: pipe(
+    applySpec({
+      activated: pathOr(null, ['activated']),
+      serialNumber: pathOr(null, ['serialNumber']),
+      companyId: pathOr(null, ['companyId']),
+      transactionOutId: pathOr(null, ['transactionOutId']),
+    }),
+    removeFiledsNilOrEmpty,
+  ),
   customer: pipe(
     applySpec({
       name: iLikeOperation('name'),

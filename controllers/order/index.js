@@ -64,7 +64,7 @@ const include = [
   },
   {
     model: StatusModel,
-    attributes: [ 'value', 'color', 'typeLabel']
+    attributes: [ 'value', 'color', 'typeLabel', 'type']
   },
   {
     model: SerialNumberModel,

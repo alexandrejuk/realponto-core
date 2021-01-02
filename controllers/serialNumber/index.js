@@ -5,6 +5,8 @@ const SerialNumberModel = database.model('serialNumber')
 const OrderModel = database.model('order')
 const ProductModel = database.model('product')
 const UserModel = database.model('user')
+const buildPagination = require('../../utils/helpers/searchSpec')
+const buildSearchAndPagination = buildPagination('serialNumber')
 
 const include = [
   UserModel,
@@ -13,41 +15,24 @@ const include = [
 ]
 
 const create = async (req, res, next) => {
-  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const transaction = await database.transaction()
-
-  const serial_numbers = pathOr([], ['body', 'serial_numbers'], req)
-  const orderId = pathOr([], ['body', 'orderId'], req)
-  const productId = pathOr([], ['body', 'productId'], req)
-  const transaction_in_id = pathOr([], ['body', 'transaction_in_id'], req)
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   const userId = pathOr(null, ['body', 'userId'], req)
+  const orderId = pathOr(null, ['body', 'orderId'], req)
+  const serialNumbers = pathOr([], ['body', 'serialNumbers'], req)
+  const productId = pathOr(null, ['body', 'productId'], req)
+
+  const payload = serialNumber => ({
+    serialNumber,
+    orderId,
+    productId,
+    userId,
+    companyId
+  })
 
   try {
-
-    const findSerial = await SerialNumberModel.findOne({
-      where: {
-        serial_number,
-        activated: true,
-      },
-      include
-    })
-
-    if (findSerial) {
-      throw new Error('Allow only one serial number with same number activated!')
-    }
-
-    const response = await Promise.all(serial_numbers.map(async (serial_number) => {
-      const serialCreated = await SerialNumberModel.create({
-        serial_number,
-        orderId,
-        productId,
-        transaction_in_id,
-        userId,
-      }, { include })
-
-      return serialCreated
-    }))
-
+    console.log('serialNumbers.map(payload)', serialNumbers.map(payload))
+    const response = await SerialNumberModel.bulkCreate(serialNumbers.map(payload), { transaction })
     await transaction.commit()
     res.json(response)
   } catch (error) {
@@ -58,34 +43,20 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
-  const transaction_out_id = pathOr(null, ['body', 'transaction_out_id'], req)
-  const update_serial_number = pathOr(null, ['body', 'serial_number'], req)
-  const serial_number = pathOr(null, ['params', 'serialNumber'], req)
+  const serialNumbers = pathOr(null, ['body', 'serialNumbers'], req)
+  const orderId = pathOr(null, ['body', 'orderId'], req)
 
   try {
-    const response = await SerialNumberModel.findOne({
+    const response = await SerialNumberModel.update({
+      activated: false,
+      transactionOutId: orderId,
+    },{
       where: {
-        serial_number,
+        serialNumber: serialNumbers,
         activated: true,
-      },
-      include
+        companyId
+      }
     })
-
-    if (response && transaction_out_id) {
-      await response.update({
-        transaction_out_id,
-        activated: false,
-      }, { include })
-    }
-
-    if (response && update_serial_number) {
-      await response.update({
-        serial_number: update_serial_number,
-      }, { include })
-    }
-
-    await response.reload()
-
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -94,9 +65,9 @@ const update = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
-  const serial_number = pathOr(null, ['params', 'serialNumber'], req)
+  const serialNumber = pathOr(null, ['params', 'serialNumber'], req)
   try {
-    const response = await SerialNumberModel.findOne({ where: { serial_number }})
+    const response = await SerialNumberModel.findOne({ where: { serialNumber, companyId }})
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -105,8 +76,13 @@ const getById = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
+  const query = buildSearchAndPagination({
+    ...pathOr({}, ['query'], req),
+    companyId,
+  })
+  console.log(query, req.query)
   try {
-    const response = await SerialNumberModel.findAll({ include })
+    const response = await SerialNumberModel.findAll({...query, include })
     res.json(response)
   } catch (error) {
     res.status(400).json({ error: error.message })

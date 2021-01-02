@@ -21,6 +21,7 @@ const SerialNumber = (sequelize) => {
     transactionInId: {
       type: Sequelize.STRING,
       allowNull: false,
+      defaultValue: '',
     },
     transactionOutId: {
       type: Sequelize.STRING,
