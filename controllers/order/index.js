@@ -452,8 +452,24 @@ const finishedOrder = async (req, res, next) => {
   }
 }
 
+const customerAssociate =  async (req, res, next) => {
+  const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
+  const customerId = pathOr(null, ['body', 'customerId'], req)
+  const id = pathOr(null, ['params', 'id'], req)
+
+  try {
+    const response = await OrderModel.findOne({ where: { companyId, id }, include })
+    await response.update({ customerId })
+    await response.reload()
+    res.json(response)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
 
 module.exports = {
+  customerAssociate,
   create,
   update,
   getById,
