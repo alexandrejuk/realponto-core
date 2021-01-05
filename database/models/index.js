@@ -8,8 +8,12 @@ const SerialNumber = require('./serialNumber.model')
 const Status = require('./status.model')
 const OrderProduct = require('./orderProduct.model')
 const Company = require('./company.model')
+const Plan = require('./plan.model')
+const Subscription = require('./subscription.model')
+const Address = require('./address.model')
 
 module.exports = [
+  Address,
   Balance,
   Product,
   Transaction,
@@ -20,4 +24,6 @@ module.exports = [
   Status,
   OrderProduct,
   Company,
+  Plan,
+  Subscription,
 ]

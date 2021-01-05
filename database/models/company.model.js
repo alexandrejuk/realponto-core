@@ -58,6 +58,14 @@ const Company = (sequelize) => {
     },
   })
 
+  Company.associate = (models) => {
+    models.company.belongsTo(models.address, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
+  }
+
   return Company
 }
 

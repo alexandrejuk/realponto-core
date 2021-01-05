@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize')
 const uuidv4Generator = require('../../utils/helpers/hash')
 
-const OrderProduct = (sequelize) => {
-  const OrderProduct = sequelize.define('orderProduct', {
+const Subscription = (sequelize) => {
+  const Subscription = sequelize.define('subscription', {
     id: {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
-      defaultValue: uuidv4Generator('op_'),
+      defaultValue: uuidv4Generator('sb_'),
     },
     productName: {
       type: Sequelize.STRING,
@@ -25,34 +25,15 @@ const OrderProduct = (sequelize) => {
     },
   })
 
-  OrderProduct.associate = (models) => {
-    models.orderProduct.belongsTo(models.product, {
-      foreignKey: {
-        allowNull: true,
-      }
-    })
-
+  Subscription.associate = (models) => {
     models.orderProduct.belongsTo(models.company, {
       foreignKey: {
         allowNull: false,
       }
     })
-
-    models.orderProduct.belongsTo(models.status, {
-      foreignKey: {
-        allowNull: false,
-      }
-    })
-
-    models.orderProduct.belongsTo(models.order, {
-      foreignKey: {
-        allowNull: false,
-      }
-    })
-
   }
 
-  return OrderProduct
+  return Subscription
 }
 
-module.exports = OrderProduct
+module.exports = Subscription

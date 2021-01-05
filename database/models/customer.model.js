@@ -31,11 +31,11 @@ const Customer = (sequelize) => {
       }
     })
 
-    // models.customer.belongsTo(models.address, {
-    //   foreignKey: {
-    //     allowNull: true,
-    //   }
-    // })
+    models.customer.belongsTo(models.address, {
+      foreignKey: {
+        allowNull: true,
+      }
+    })
   }
 
   return Customer

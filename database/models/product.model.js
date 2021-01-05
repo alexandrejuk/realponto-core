@@ -23,6 +23,16 @@ const Product = (sequelize) => {
       allowNull: false,
       defaultValue: 5,
     },
+    buyPrice: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    salePrice: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
   })
 
   Product.associate = (models) => {
