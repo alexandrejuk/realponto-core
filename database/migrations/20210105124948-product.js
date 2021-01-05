@@ -21,6 +21,16 @@ module.exports = {
       allowNull: false,
       defaultValue: 5,
     },
+    buyPrice: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    salePrice: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     companyId: {
       type: Sequelize.STRING,
       references: {

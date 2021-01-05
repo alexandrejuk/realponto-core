@@ -1,33 +1,30 @@
 'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('customers', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('plans', {
     id: {
+      allowNull: false,
       type: Sequelize.STRING,
       primaryKey: true,
-      allowNull: false,
     },
-    name: {
-      type: Sequelize.STRING,
+    activated: {
+      type: Sequelize.BOOLEAN,
       allowNull: false,
+      defaultValue: true,
     },
-    document: {
+    description: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
     },
-    phone: {
+    discount: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true,
     },
-    companyId: {
-      type: Sequelize.STRING,
-      references: {
-        model: 'companies',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'restrict',
+    amount: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
     },
     createdAt: {
       allowNull: false,
@@ -40,5 +37,5 @@ module.exports = {
       defaultValue: new Date(),
     },
   }),
-  down: queryInterface => queryInterface.dropTable('customers'),
+  down: queryInterface => queryInterface.dropTable('plans'),
 }

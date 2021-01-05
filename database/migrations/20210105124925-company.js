@@ -54,6 +54,16 @@ module.exports = {
       allowNull: false,
       defaultValue: false,
     },
+    addressId: {
+      type: Sequelize.STRING,
+      references: {
+        model: 'addresses',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'restrict',
+      allowNull: true,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,

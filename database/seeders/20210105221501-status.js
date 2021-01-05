@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('statuses',
     [
       {
-        id: 'st_694b1df8-f825-4621-910b-6cf73067791d',
+        id: 'st_71b4a55b-c463-4f89-8f37-c84f0f96843f',
         label: 'delivery',
         value: 'Entregue',
         color: '#5DA0FC',

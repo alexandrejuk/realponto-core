@@ -1,47 +1,33 @@
-'use strict';
+'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('orderProducts', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('customers', {
     id: {
       type: Sequelize.STRING,
       primaryKey: true,
       allowNull: false,
     },
-    productName: {
+    name: {
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: false,
     },
-    quantity: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
+    document: {
+      type: Sequelize.STRING,
+      allowNull: true,
     },
-    orderId: {
+    phone: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    addressId: {
       type: Sequelize.STRING,
       references: {
-        model: 'orders',
+        model: 'addresses',
         key: 'id',
       },
       onUpdate: 'cascade',
       onDelete: 'restrict',
-    },
-    statusId: {
-      type: Sequelize.STRING,
-      references: {
-        model: 'statuses',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'restrict',
-    },
-    productId: {
-      type: Sequelize.STRING,
-      references: {
-        model: 'products',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'restrict',
+      allowNull: true,
     },
     companyId: {
       type: Sequelize.STRING,
@@ -51,6 +37,7 @@ module.exports = {
       },
       onUpdate: 'cascade',
       onDelete: 'restrict',
+      allowNull: false,
     },
     createdAt: {
       allowNull: false,
@@ -63,5 +50,5 @@ module.exports = {
       defaultValue: new Date(),
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('orderProducts')
-};
+  down: queryInterface => queryInterface.dropTable('customers'),
+}
