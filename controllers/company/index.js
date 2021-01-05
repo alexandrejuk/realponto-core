@@ -26,6 +26,16 @@ const create = async (req, res, next) => {
   }
 }
 
+const getById = async (req, res, next) => {
+  try {
+    const response = await CompanyModel.findByPk(req.params.id)
+    res.json(response)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+
 module.exports = {
   create,
+  getById,
 }

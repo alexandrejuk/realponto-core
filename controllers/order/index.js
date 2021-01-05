@@ -167,12 +167,16 @@ const create = async (req, res, next) => {
   const userId = pathOr(null, ['body', 'userId'], req)
   const createdBy = pathOr('us_a92a34bf-d0fc-4967-b78a-0ddf2955de4c', ['decoded', 'user', 'id'], req)
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
-  const pendingReview = pathOr(false, ['body', 'pendingReview'], req)
+  let pendingReview = pathOr(false, ['body', 'pendingReview'], req)
   const products = pathOr([], ['body', 'products'], req)
 
   try {
     const findStatus = await StatusModel.findByPk(statusId, { raw: true })
     const pendingReviewStatus = await StatusModel.findOne({ where: { label: 'pending_analysis' }})
+
+    if (findStatus.label === 'booking') {
+      pendingReview = true
+    }
 
     if (!findStatus) {
       // se o status não estiver cadastrado não podemos criar a ordem
@@ -278,7 +282,11 @@ const update = async (req, res, next) => {
       in_analysis: 0,
       pending_analysis: 0,
       analysis_return: 0,
+      booking_return: 0,
+      booking: 0,
     })
+
+    console.log(situation)
 
     if ((situation.analysis_return + payload.quantity) === situation.pending_analysis) {
       const updateProductOrder = await OrderProductModel.findOne({ where: { id: orderProductId }})
@@ -314,6 +322,15 @@ const update = async (req, res, next) => {
     if (findStatus.type === 'inputs' && situation.in_analysis === situation.analysis_return) {
       throw new Error('quantity send not allow')
     }
+
+    // if (findStatus.type === 'inputs' && situation.booking === situation.booking_return) {
+    //   throw new Error('quantity send not allow')
+    // }
+
+    // if (findStatus.type === 'inputs' && payload.quantity > (situation.booking - situation.booking_return)) {
+    //   console.log('oii')
+    //   throw new Error('quantity send not allow')
+    // }
 
     await TransactionModel.create({
       ...payload,

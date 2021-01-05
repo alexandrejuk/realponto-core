@@ -69,6 +69,7 @@ const getAll = async (req, res, next) => {
   })
   try {
     const { count, rows } = await ProductModel.findAndCountAll({
+      ...query,
       include: [BalanceModel]
     })
     res.json({ total: count, source: rows })

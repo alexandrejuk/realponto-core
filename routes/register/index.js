@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { companyController } = require('../../controllers')
 
-router.get('/companies/:id', companyController.getById)
+router.post('/register', companyController.create)
 
 module.exports = router
