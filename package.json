@@ -9,7 +9,7 @@
     "seeders": "sequelize db:seed:all",
     "seeders:undo:all": "sequelize db:seed:all",
     "migrate:undo:all": "sequelize db:migrate:undo:all",
-    "build": "sequelize db:migrate --url $DATABASE_URL && sequelize db:migrate --url $DATABASE_URL"
+    "build": "sequelize db:migrate --url $DATABASE_URL"
   },
   "dependencies": {
     "bcrypt": "5.0.0",
