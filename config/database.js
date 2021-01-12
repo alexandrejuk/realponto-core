@@ -1,28 +1,24 @@
-const DB_USERNAME = 'postgres'
-const DB_HOST = 'localhost'
-const DB_NAME = 'realponto-core-postgres'
-const DB_PWD = 'postgres'
-
 module.exports = {
   development: {
-    username: DB_USERNAME,
-    password: DB_PWD,
-    database: DB_NAME,
-    host: DB_HOST,
-    dialect: 'postgres'
+  "use_env_variable": "DATABASE_URL",
+    dialectOptions: {
+      ssl: true,
+    },
   },
   test: {
-    username: DB_USERNAME,
-    password: DB_PWD,
-    database: DB_NAME,
-    host: DB_HOST,
-    dialect: 'postgres'
+  "use_env_variable": "DATABASE_URL",
+    dialectOptions: {
+      ssl: true,
+    },
   },
   production: {
-    username: DB_USERNAME,
-    password: DB_PWD,
-    database: DB_NAME,
-    host: DB_HOST,
-    dialect: 'postgres'
+     "use_env_variable": "DATABASE_URL",
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+          require:true,
+          rejectUnauthorized: false
+      },
+    },
   }
 }

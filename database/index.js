@@ -13,6 +13,9 @@ if(DATABASE_URL) {
   sequelize = new Sequelize(DATABASE_URL, {
       dialect: 'postgres',
       logging: false,
+      dialectOptions: {
+        ssl: true,
+      },
       pool: {
         max: 5,
         min: 0,
