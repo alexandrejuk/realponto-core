@@ -141,23 +141,36 @@ const quantityTotalProducts = companyId => (curr, prev) => {
   return curr
 }
 
-const updateBalance = typeEvent => async ({
+const updateBalance = ({ type, label }) => async ({
   productId,
   quantity,
   companyId,
 }) => {
   const productBalance = await BalanceModel.findOne({ where: { productId, companyId }})
-  if (productBalance) {
-    await productBalance.update({
-      quantity: (
-        typeEvent === 'outputs'
-          ? productBalance.quantity - quantity
-          : productBalance.quantity + quantity
-      )
-    })
+    if (label === 'booking') {
+      await productBalance.update({
+        booking: productBalance.booking + quantity
+      })
+    }
+
+    if (label === 'booking_return') {
+      await productBalance.update({
+        booking: productBalance.booking_return + quantity
+      })
+    }
+
+    if (label !== 'booking' && label === 'booking_return') {
+      await productBalance.update({
+        quantity: (
+          type === 'outputs'
+            ? productBalance.quantity - quantity
+            : productBalance.quantity + quantity
+        )
+      })
+    }
+
     await productBalance.reload()
     return productBalance
-  }
 }
 
 const create = async (req, res, next) => {
@@ -165,7 +178,7 @@ const create = async (req, res, next) => {
   const statusId = pathOr(null, ['body', 'statusId'], req)
   const customerId = pathOr(null, ['body', 'customerId'], req)
   const userId = pathOr(null, ['body', 'userId'], req)
-  const createdBy = pathOr('us_a92a34bf-d0fc-4967-b78a-0ddf2955de4c', ['decoded', 'user', 'id'], req)
+  const createdBy = pathOr(null, ['decoded', 'user', 'id'], req)
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
   let pendingReview = pathOr(false, ['body', 'pendingReview'], req)
   const products = pathOr([], ['body', 'products'], req)
@@ -231,7 +244,7 @@ const create = async (req, res, next) => {
 
     await TransactionModel.bulkCreate(productsPayload, { transaction })
     await OrderProductModel.bulkCreate(orderProductsPayload, { transaction })
-    await Promise.all(map(updateBalance(findStatus.type), productsTotal))
+    await Promise.all(map(updateBalance(findStatus), productsTotal))
     await response.reload({ include, transaction })
     await transaction.commit()
     res.json(response)
@@ -284,9 +297,8 @@ const update = async (req, res, next) => {
       analysis_return: 0,
       booking_return: 0,
       booking: 0,
+      delivery: 0,
     })
-
-    console.log(situation)
 
     if ((situation.analysis_return + payload.quantity) === situation.pending_analysis) {
       const updateProductOrder = await OrderProductModel.findOne({ where: { id: orderProductId }})
@@ -323,15 +335,20 @@ const update = async (req, res, next) => {
       throw new Error('quantity send not allow')
     }
 
-    // if (findStatus.type === 'inputs' && situation.booking === situation.booking_return) {
-    //   throw new Error('quantity send not allow')
-    // }
+    if (findStatus.type === 'inputs' && situation.booking_return > (situation.booking - situation.delivery)) {
+      throw new Error('quantity send not allow')
+    }
 
-    // if (findStatus.type === 'inputs' && payload.quantity > (situation.booking - situation.booking_return)) {
-    //   console.log('oii')
-    //   throw new Error('quantity send not allow')
-    // }
+    if (findStatus.type === 'outputs' && situation.quantity > (situation.booking - situation.delivery)) {
+      throw new Error('quantity send not allow')
+    }
 
+    if ((situation.booking_return + situation.delivery) === situation.booking) {
+      const updateProductOrder = await OrderProductModel.findOne({ where: { id: orderProductId }})
+      await updateProductOrder.update({ statusId: response.statusId })
+      throw new Error('quantity send not allow')
+    }
+    
     await TransactionModel.create({
       ...payload,
       orderId,
@@ -485,7 +502,6 @@ const customerAssociate =  async (req, res, next) => {
     res.status(400).json({ error: error.message })
   }
 }
-
 
 module.exports = {
   customerAssociate,

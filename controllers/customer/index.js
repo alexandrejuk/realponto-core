@@ -1,19 +1,31 @@
 const { pathOr } = require('ramda')
 const database = require('../../database')
 const CustomerModel = database.model('customer')
+const AddressModel = database.model('address')
 const buildPagination = require('../../utils/helpers/searchSpec')
 const buildSearchAndPagination = buildPagination('customer')
 
 const create = async (req, res, next) => {
+  const transaction = await database.transaction()
   const customer = pathOr({}, ['body'], req)
+  const address = pathOr(null, ['address'], customer)
   const companyId = pathOr(null, ['decoded', 'user', 'companyId'], req)
+  let customerAddress = null
   try {
+    if(address) {
+      customerAddress = await AddressModel.create(address, { transaction })
+    }
+
     const response = await CustomerModel.create({
       ...customer,
       companyId,
-    })
+      ...(customerAddress ? {  addressId: customerAddress.id, }: {})
+    }, { transaction })
+
+    await transaction.commit()
     res.json(response)
   } catch (error) {
+    await transaction.rollback()
     res.status(400).json({ error: error.message })
   }
 }
